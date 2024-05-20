@@ -1,0 +1,14 @@
+.DS_Store
+.vscode
+!.vscode/extensions.json
+.idea
+.rollup.cache
+.vercel
+tsconfig.tsbuildinfo
+
+node_modules
+boost-*.tar.xz
+boost
+build
+public
+dist

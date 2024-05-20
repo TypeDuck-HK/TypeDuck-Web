@@ -1,0 +1,13 @@
+diff --git a/include/darts.h b/include/darts.h
+index dd73cf1b..69a7328a 100644
+--- a/include/darts.h
++++ b/include/darts.h
+@@ -16,7 +16,7 @@
+ #define DARTS_LINE_TO_STR(line) DARTS_INT_TO_STR(line)
+ #define DARTS_LINE_STR DARTS_LINE_TO_STR(__LINE__)
+ #define DARTS_THROW(msg) throw Darts::Details::Exception( \
+-  __FILE__ ":" DARTS_LINE_STR ": exception: " msg)
++  __FILE_NAME__ ":" DARTS_LINE_STR ": exception: " msg)
+ 
+ namespace Darts {
+ 

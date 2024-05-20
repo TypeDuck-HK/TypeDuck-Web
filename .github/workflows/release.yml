@@ -1,0 +1,29 @@
+name: Release
+on:
+    push:
+        branches:
+            - main
+jobs:
+    build:
+        uses: ./.github/workflows/build.yml
+    release:
+        needs: build
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - name: Checkout Latest Commit
+              uses: actions/checkout@v4
+              with:
+                  filter: blob:none
+            - name: Download Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: TypeDuck-Web
+            - name: Release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+              run: |
+                  tar -xvf TypeDuck-Web.tar
+                  zip -r TypeDuck-Web.zip TypeDuck-Web
+                  gh release upload latest TypeDuck-Web.zip --clobber

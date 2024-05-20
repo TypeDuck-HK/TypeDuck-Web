@@ -1,0 +1,92 @@
+name: Build
+on:
+    workflow_call:
+    pull_request:
+jobs:
+    build:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest, macos-13, macos-14, windows-latest]
+        steps:
+            - name: Checkout Latest Commit
+              uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+            - name: Install Ubuntu Dependencies
+              if: ${{ matrix.os == 'ubuntu-latest' }}
+              run: |
+                  sudo apt update
+                  sudo apt upgrade -y
+                  sudo apt install -y \
+                      ninja-build \
+                      libboost-dev \
+                      libboost-regex-dev \
+                      libyaml-cpp-dev \
+                      libleveldb-dev \
+                      libmarisa-dev \
+                      libopencc-dev
+                  echo "CC=/usr/bin/clang" >> $GITHUB_ENV
+                  echo "CXX=/usr/bin/clang++" >> $GITHUB_ENV
+            - name: Install macOS Dependencies
+              if: ${{ startsWith(matrix.os, 'macos') }}
+              run: |
+                  brew install ninja
+            - name: Install Windows Dependencies
+              if: ${{ matrix.os == 'windows-latest' }}
+              run: |
+                  choco upgrade -y llvm
+                  pip install ninja
+                  echo "$env:ProgramFiles\LLVM\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: latest
+            - name: Setup Emscripten SDK
+              uses: mymindstorm/setup-emsdk@v14
+            - name: Install Package Dependencies
+              run: |
+                  bun i
+            - name: Prepare Boost
+              run: |
+                  bun run boost
+            - name: Build Native
+              run: |
+                  bun run native
+            - name: Build Schema
+              run: |
+                  bun run schema
+            - name: Build Library
+              run: |
+                  bun run lib
+            - name: Build WebAssembly
+              run: |
+                  bun run wasm
+            - name: Build App
+              run: |
+                  bun run build
+    docker:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+        steps:
+            - name: Checkout Latest Commit
+              uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+            - name: Build App
+              run: |
+                  docker build -t typeduck-web .
+                  docker create --name build typeduck-web
+            - name: Copy Files
+              run: |
+                  docker cp build:/TypeDuck-Web/dist ./TypeDuck-Web
+            - name: Compress Files
+              run: |
+                  tar -cvf TypeDuck-Web.tar TypeDuck-Web
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: TypeDuck-Web
+                  path: TypeDuck-Web.tar

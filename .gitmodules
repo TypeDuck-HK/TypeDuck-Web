@@ -1,0 +1,6 @@
+[submodule "librime"]
+	path = librime
+	url = https://github.com/TypeDuck-HK/librime.git
+[submodule "schema"]
+	path = schema
+	url = https://github.com/TypeDuck-HK/schema.git

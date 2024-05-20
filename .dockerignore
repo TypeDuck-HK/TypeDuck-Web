@@ -1,0 +1,10 @@
+.DS_Store
+.vscode
+.idea
+.rollup.cache
+.vercel
+tsconfig.tsbuildinfo
+
+node_modules
+build
+dist

@@ -1,0 +1,272 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b787631..d8bda34 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -43,6 +43,8 @@ option (WITH_TLS "Enable Thread Local Storage (TLS) support" ON)
+ set (WITH_UNWIND libunwind CACHE STRING "unwind driver")
+ set_property (CACHE WITH_UNWIND PROPERTY STRINGS none unwind libunwind)
+ 
++add_definitions(-ffile-prefix-map=${CMAKE_CURRENT_SOURCE_DIR}=.)
++
+ cmake_dependent_option (WITH_GMOCK "Use Google Mock" ON WITH_GTEST OFF)
+ 
+ set (WITH_FUZZING none CACHE STRING "Fuzzing engine")
+diff --git a/src/glog/logging.h b/src/glog/logging.h
+index 9ab897e..a7b2564 100644
+--- a/src/glog/logging.h
++++ b/src/glog/logging.h
+@@ -358,9 +358,9 @@ struct [[deprecated("Use LogMessage instead.")]] LogMessageInfo {
+ // better to have compact code for these operations.
+ 
+ #if GOOGLE_STRIP_LOG == 0
+-#  define COMPACT_GOOGLE_LOG_INFO google::LogMessage(__FILE__, __LINE__)
++#  define COMPACT_GOOGLE_LOG_INFO google::LogMessage(__FILE_NAME__, __LINE__)
+ #  define LOG_TO_STRING_INFO(message) \
+-    google::LogMessage(__FILE__, __LINE__, google::GLOG_INFO, message)
++    google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_INFO, message)
+ #else
+ #  define COMPACT_GOOGLE_LOG_INFO google::NullStream()
+ #  define LOG_TO_STRING_INFO(message) google::NullStream()
+@@ -368,9 +368,9 @@ struct [[deprecated("Use LogMessage instead.")]] LogMessageInfo {
+ 
+ #if GOOGLE_STRIP_LOG <= 1
+ #  define COMPACT_GOOGLE_LOG_WARNING \
+-    google::LogMessage(__FILE__, __LINE__, google::GLOG_WARNING)
++    google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_WARNING)
+ #  define LOG_TO_STRING_WARNING(message) \
+-    google::LogMessage(__FILE__, __LINE__, google::GLOG_WARNING, message)
++    google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_WARNING, message)
+ #else
+ #  define COMPACT_GOOGLE_LOG_WARNING google::NullStream()
+ #  define LOG_TO_STRING_WARNING(message) google::NullStream()
+@@ -378,18 +378,18 @@ struct [[deprecated("Use LogMessage instead.")]] LogMessageInfo {
+ 
+ #if GOOGLE_STRIP_LOG <= 2
+ #  define COMPACT_GOOGLE_LOG_ERROR \
+-    google::LogMessage(__FILE__, __LINE__, google::GLOG_ERROR)
++    google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_ERROR)
+ #  define LOG_TO_STRING_ERROR(message) \
+-    google::LogMessage(__FILE__, __LINE__, google::GLOG_ERROR, message)
++    google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_ERROR, message)
+ #else
+ #  define COMPACT_GOOGLE_LOG_ERROR google::NullStream()
+ #  define LOG_TO_STRING_ERROR(message) google::NullStream()
+ #endif
+ 
+ #if GOOGLE_STRIP_LOG <= 3
+-#  define COMPACT_GOOGLE_LOG_FATAL google::LogMessageFatal(__FILE__, __LINE__)
++#  define COMPACT_GOOGLE_LOG_FATAL google::LogMessageFatal(__FILE_NAME__, __LINE__)
+ #  define LOG_TO_STRING_FATAL(message) \
+-    google::LogMessage(__FILE__, __LINE__, google::GLOG_FATAL, message)
++    google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_FATAL, message)
+ #else
+ #  define COMPACT_GOOGLE_LOG_FATAL google::NullStreamFatal()
+ #  define LOG_TO_STRING_FATAL(message) google::NullStreamFatal()
+@@ -407,40 +407,40 @@ struct [[deprecated("Use LogMessage instead.")]] LogMessageInfo {
+ #  define COMPACT_GOOGLE_LOG_DFATAL COMPACT_GOOGLE_LOG_ERROR
+ #elif GOOGLE_STRIP_LOG <= 3
+ #  define COMPACT_GOOGLE_LOG_DFATAL \
+-    google::LogMessage(__FILE__, __LINE__, google::GLOG_FATAL)
++    google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_FATAL)
+ #else
+ #  define COMPACT_GOOGLE_LOG_DFATAL google::NullStreamFatal()
+ #endif
+ 
+ #define GOOGLE_LOG_INFO(counter)                                     \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_INFO, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_INFO, counter, \
+                      &google::LogMessage::SendToLog)
+ #define SYSLOG_INFO(counter)                                         \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_INFO, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_INFO, counter, \
+                      &google::LogMessage::SendToSyslogAndLog)
+ #define GOOGLE_LOG_WARNING(counter)                                     \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_WARNING, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_WARNING, counter, \
+                      &google::LogMessage::SendToLog)
+ #define SYSLOG_WARNING(counter)                                         \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_WARNING, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_WARNING, counter, \
+                      &google::LogMessage::SendToSyslogAndLog)
+ #define GOOGLE_LOG_ERROR(counter)                                     \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_ERROR, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_ERROR, counter, \
+                      &google::LogMessage::SendToLog)
+ #define SYSLOG_ERROR(counter)                                         \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_ERROR, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_ERROR, counter, \
+                      &google::LogMessage::SendToSyslogAndLog)
+ #define GOOGLE_LOG_FATAL(counter)                                     \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_FATAL, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_FATAL, counter, \
+                      &google::LogMessage::SendToLog)
+ #define SYSLOG_FATAL(counter)                                         \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_FATAL, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_FATAL, counter, \
+                      &google::LogMessage::SendToSyslogAndLog)
+ #define GOOGLE_LOG_DFATAL(counter)                                      \
+-  google::LogMessage(__FILE__, __LINE__, google::DFATAL_LEVEL, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::DFATAL_LEVEL, counter, \
+                      &google::LogMessage::SendToLog)
+ #define SYSLOG_DFATAL(counter)                                          \
+-  google::LogMessage(__FILE__, __LINE__, google::DFATAL_LEVEL, counter, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::DFATAL_LEVEL, counter, \
+                      &google::LogMessage::SendToSyslogAndLog)
+ 
+ #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || \
+@@ -457,7 +457,7 @@ struct [[deprecated("Use LogMessage instead.")]] LogMessageInfo {
+       std::unique_ptr<char, decltype(&LocalFree)> release{message,             \
+                                                           &LocalFree};         \
+       if (message_length > 0) {                                                \
+-        google::LogMessage(__FILE__, __LINE__, google::GLOG_ERROR, 0,          \
++        google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_ERROR, 0,          \
+                            &google::LogMessage::SendToLog)                     \
+                 .stream()                                                      \
+             << reinterpret_cast<const char*>(message);                         \
+@@ -546,11 +546,11 @@ class LogSink;  // defined below
+ //   LogSeverity severity;
+ // The cast is to disambiguate nullptr arguments.
+ #define LOG_TO_SINK(sink, severity)                               \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_##severity, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity, \
+                      static_cast<google::LogSink*>(sink), true)   \
+       .stream()
+ #define LOG_TO_SINK_BUT_NOT_TO_LOGFILE(sink, severity)            \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_##severity, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity, \
+                      static_cast<google::LogSink*>(sink), false)  \
+       .stream()
+ 
+@@ -766,7 +766,7 @@ using _Check_string = std::string;
+                    google::logging::internal::GetReferenceableValue(val1),     \
+                    google::logging::internal::GetReferenceableValue(val2),     \
+                    #val1 " " #op " " #val2))                                   \
+-    log(__FILE__, __LINE__,                                                    \
++    log(__FILE_NAME__, __LINE__,                                                    \
+         google::logging::internal::CheckOpString(std::move(_result)))          \
+         .stream()
+ #else
+@@ -778,7 +778,7 @@ using _Check_string = std::string;
+                    google::logging::internal::GetReferenceableValue(val1), \
+                    google::logging::internal::GetReferenceableValue(val2), \
+                    #val1 " " #op " " #val2))                               \
+-    log(__FILE__, __LINE__, _result).stream()
++    log(__FILE_NAME__, __LINE__, _result).stream()
+ #endif  // STATIC_ANALYSIS, DCHECK_IS_ON()
+ 
+ #if GOOGLE_STRIP_LOG <= 3
+@@ -819,7 +819,7 @@ using _Check_string = std::string;
+ 
+ #define CHECK_NOTNULL(val)                 \
+   google::logging::internal::CheckNotNull( \
+-      __FILE__, __LINE__, "'" #val "' Must be non nullptr", (val))
++      __FILE_NAME__, __LINE__, "'" #val "' Must be non nullptr", (val))
+ 
+ // Helper functions for string comparisons.
+ // To avoid bloat, the definitions are in logging.cc.
+@@ -881,7 +881,7 @@ DECLARE_CHECK_STROP_IMPL(strcasecmp, false)
+ #define PLOG(severity) GOOGLE_PLOG(severity, 0).stream()
+ 
+ #define GOOGLE_PLOG(severity, counter)                                 \
+-  google::ErrnoLogMessage(__FILE__, __LINE__, google::GLOG_##severity, \
++  google::ErrnoLogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity, \
+                           counter, &google::LogMessage::SendToLog)
+ 
+ #define PLOG_IF(severity, condition) \
+@@ -933,9 +933,9 @@ namespace google {
+           std::chrono::duration<double>(seconds));                             \
+   static std::atomic<google::int64> LOG_PREVIOUS_TIME_RAW;                     \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                         \
+-      __FILE__, __LINE__, &LOG_TIME_PERIOD, sizeof(google::int64), ""));       \
++      __FILE_NAME__, __LINE__, &LOG_TIME_PERIOD, sizeof(google::int64), ""));       \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                         \
+-      __FILE__, __LINE__, &LOG_PREVIOUS_TIME_RAW, sizeof(google::int64), "")); \
++      __FILE_NAME__, __LINE__, &LOG_PREVIOUS_TIME_RAW, sizeof(google::int64), "")); \
+   const auto LOG_CURRENT_TIME =                                                \
+       std::chrono::duration_cast<std::chrono::nanoseconds>(                    \
+           std::chrono::steady_clock::now().time_since_epoch());                \
+@@ -949,54 +949,54 @@ namespace google {
+             .count(),                                                          \
+         std::memory_order_relaxed);                                            \
+   if (LOG_TIME_DELTA > LOG_TIME_PERIOD)                                        \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_##severity).stream()
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity).stream()
+ 
+ #define SOME_KIND_OF_LOG_EVERY_N(severity, n, what_to_do)               \
+   static std::atomic<int> LOG_OCCURRENCES(0), LOG_OCCURRENCES_MOD_N(0); \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                  \
+-      __FILE__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));          \
++      __FILE_NAME__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));          \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                  \
+-      __FILE__, __LINE__, &LOG_OCCURRENCES_MOD_N, sizeof(int), ""));    \
++      __FILE_NAME__, __LINE__, &LOG_OCCURRENCES_MOD_N, sizeof(int), ""));    \
+   ++LOG_OCCURRENCES;                                                    \
+   if (++LOG_OCCURRENCES_MOD_N > n) LOG_OCCURRENCES_MOD_N -= n;          \
+   if (LOG_OCCURRENCES_MOD_N == 1)                                       \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_##severity,       \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity,       \
+                      LOG_OCCURRENCES, &what_to_do)                      \
+       .stream()
+ 
+ #define SOME_KIND_OF_LOG_IF_EVERY_N(severity, condition, n, what_to_do)       \
+   static std::atomic<int> LOG_OCCURRENCES(0), LOG_OCCURRENCES_MOD_N(0);       \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                        \
+-      __FILE__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));                \
++      __FILE_NAME__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));                \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                        \
+-      __FILE__, __LINE__, &LOG_OCCURRENCES_MOD_N, sizeof(int), ""));          \
++      __FILE_NAME__, __LINE__, &LOG_OCCURRENCES_MOD_N, sizeof(int), ""));          \
+   ++LOG_OCCURRENCES;                                                          \
+   if ((condition) &&                                                          \
+       ((LOG_OCCURRENCES_MOD_N = (LOG_OCCURRENCES_MOD_N + 1) % n) == (1 % n))) \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_##severity,             \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity,             \
+                      LOG_OCCURRENCES, &what_to_do)                            \
+       .stream()
+ 
+ #define SOME_KIND_OF_PLOG_EVERY_N(severity, n, what_to_do)              \
+   static std::atomic<int> LOG_OCCURRENCES(0), LOG_OCCURRENCES_MOD_N(0); \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                  \
+-      __FILE__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));          \
++      __FILE_NAME__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));          \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(                  \
+-      __FILE__, __LINE__, &LOG_OCCURRENCES_MOD_N, sizeof(int), ""));    \
++      __FILE_NAME__, __LINE__, &LOG_OCCURRENCES_MOD_N, sizeof(int), ""));    \
+   ++LOG_OCCURRENCES;                                                    \
+   if (++LOG_OCCURRENCES_MOD_N > n) LOG_OCCURRENCES_MOD_N -= n;          \
+   if (LOG_OCCURRENCES_MOD_N == 1)                                       \
+-  google::ErrnoLogMessage(__FILE__, __LINE__, google::GLOG_##severity,  \
++  google::ErrnoLogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity,  \
+                           LOG_OCCURRENCES, &what_to_do)                 \
+       .stream()
+ 
+ #define SOME_KIND_OF_LOG_FIRST_N(severity, n, what_to_do)         \
+   static std::atomic<int> LOG_OCCURRENCES(0);                     \
+   GLOG_IFDEF_THREAD_SANITIZER(AnnotateBenignRaceSized(            \
+-      __FILE__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));    \
++      __FILE_NAME__, __LINE__, &LOG_OCCURRENCES, sizeof(int), ""));    \
+   if (LOG_OCCURRENCES <= n) ++LOG_OCCURRENCES;                    \
+   if (LOG_OCCURRENCES <= n)                                       \
+-  google::LogMessage(__FILE__, __LINE__, google::GLOG_##severity, \
++  google::LogMessage(__FILE_NAME__, __LINE__, google::GLOG_##severity, \
+                      LOG_OCCURRENCES, &what_to_do)                \
+       .stream()
+ 
+@@ -1418,7 +1418,7 @@ class GLOG_EXPORT LogMessageFatal : public LogMessage {
+ // A non-macro interface to the log facility; (useful
+ // when the logging level is not a compile-time constant).
+ inline void LogAtLevel(LogSeverity severity, std::string const& msg) {
+-  LogMessage(__FILE__, __LINE__, severity).stream() << msg;
++  LogMessage(__FILE_NAME__, __LINE__, severity).stream() << msg;
+ }
+ 
+ // A macro alternative of LogAtLevel. New code may want to use this
+@@ -1426,7 +1426,7 @@ inline void LogAtLevel(LogSeverity severity, std::string const& msg) {
+ // file name and the line number where this macro is put like other
+ // LOG macros, 2. this macro can be used as C++ stream.
+ #define LOG_AT_LEVEL(severity) \
+-  google::LogMessage(__FILE__, __LINE__, severity).stream()
++  google::LogMessage(__FILE_NAME__, __LINE__, severity).stream()
+ 
+ // Allow folks to put a counter in the LOG_EVERY_X()'ed messages. This
+ // only works if ostream is a LogStream. If the ostream is not a

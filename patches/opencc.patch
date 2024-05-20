@@ -1,0 +1,50 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1acb75a..3faa727 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -152,12 +152,22 @@ add_definitions(
+   -DPACKAGE_NAME="${PACKAGE_NAME}"
+ )
+ 
++add_definitions(-ffile-prefix-map=${CMAKE_CURRENT_SOURCE_DIR}=.)
++
++if (EMSCRIPTEN)
++  add_definitions(-I"${CMAKE_CURRENT_SOURCE_DIR}/../../../build/sysroot/usr/include")
++else()
++  add_definitions(-I"${CMAKE_CURRENT_SOURCE_DIR}/../../include")
++endif()
++
+ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+   add_definitions(
+     -std=c++14
+     -Wall
+   )
+-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
++  if (NOT EMSCRIPTEN)
++    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
++  endif ()
+   if (CMAKE_BUILD_TYPE MATCHES Debug)
+     add_definitions(-O0 -g3)
+   endif ()
+@@ -221,9 +231,6 @@ endif()
+ ######## Subdirectories
+ 
+ add_subdirectory(src)
+-add_subdirectory(doc)
+-add_subdirectory(data)
+-add_subdirectory(test)
+ 
+ ######## Testing
+ 
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 75eda02..759fa85 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -202,7 +202,3 @@ endif()
+ if (ENABLE_BENCHMARK)
+   add_subdirectory(benchmark)
+ endif()
+-
+-# Subdir
+-
+-add_subdirectory(tools)
