@@ -36,6 +36,19 @@ index 1acb75a..3faa727 100644
  
  ######## Testing
  
+diff --git a/deps/rapidjson-1.1.0/rapidjson/document.h b/deps/rapidjson-1.1.0/rapidjson/document.h
+index e3e20df..b0f1f70 100644
+--- a/deps/rapidjson-1.1.0/rapidjson/document.h
++++ b/deps/rapidjson-1.1.0/rapidjson/document.h
+@@ -316,8 +316,6 @@ struct GenericStringRef {
+ 
+     GenericStringRef(const GenericStringRef& rhs) : s(rhs.s), length(rhs.length) {}
+ 
+-    GenericStringRef& operator=(const GenericStringRef& rhs) { s = rhs.s; length = rhs.length; }
+-
+     //! implicit conversion to plain CharType pointer
+     operator const Ch *() const { return s; }
+ 
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
 index 75eda02..759fa85 100644
 --- a/src/CMakeLists.txt
