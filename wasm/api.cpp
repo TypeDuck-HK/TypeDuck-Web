@@ -137,7 +137,6 @@ bool customize(int page_size, int options) {
     settings_initialized = true;
   }
   Bool success = true;
-  success &= levers_api->load_settings(default_settings);
   success &=
       levers_api->customize_int(default_settings, PAGE_SIZE_KEY, page_size);
   success &= levers_api->save_settings(default_settings);
@@ -151,7 +150,6 @@ bool customize(int page_size, int options) {
     }
   }
   success &= rime->config_set_item(&config, "", &config);
-  success &= levers_api->load_settings(common_settings);
   success &=
       levers_api->customize_item(common_settings, PATCH_DIRECTIVE, &config);
   success &= levers_api->save_settings(common_settings);
