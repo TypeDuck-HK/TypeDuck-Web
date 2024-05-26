@@ -16,7 +16,7 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 							[entry.honzi, entry.jyutping, entry.pronunciationType],
 							(honzi, jyutping, pronunciationType) =>
 								<div className="entry-head">
-									{honzi && <span className={`${prefs.isHeiTypeface ? "font-kai-fallback-hei" : "font-kai-fallback-sung"} font-extralight text-[32pt] whitespace-nowrap`}>{honzi}</span>}
+									{honzi && <span className={`${prefs.isHeiTypeface ? "font-kai-fallback-hei" : "font-kai-fallback-sung"} text-[32pt] whitespace-nowrap`}>{honzi}</span>}
 									{jyutping && <span className="text-[15pt] text-primary-content-300 whitespace-nowrap">{jyutping}</span>}
 									{pronunciationType && <span className="text-primary-content-300 whitespace-nowrap">{pronunciationType}</span>}
 								</div>,
@@ -38,7 +38,7 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 									{otherData?.map(([key, name, value]) =>
 										<tr key={key}>
 											<th>{name}</th>
-											<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} font-extralight`}>
+											<td className={prefs.isHeiTypeface ? "font-hei" : "font-sung"}>
 												{value.split("，").map((line, i) => <div key={i}>{line}</div>)}
 											</td>
 										</tr>

@@ -71,7 +71,7 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 					<td className={`font-geometric text-[11pt] ${commentStyle200}`}>{!index && info.label}</td>
 					<td className={isHighlighted ? "bg-primary" : ""}>
 						{showJyutping && <div className={`text-[10pt] ${commentStyle300}`}>{entry.jyutping}</div>}
-						<div className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} font-extralight text-[13pt]${isHighlighted ? " text-primary-content" : ""}${showJyutping ? " tracking-[8pt]" : ""}`}>{entry.honzi}</div>
+						<div className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${isHighlighted ? " text-primary-content" : ""}${showJyutping ? " tracking-[8pt]" : ""}`}>{entry.honzi}</div>
 					</td>
 					<td className={commentStyle400}>{!index && (!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 					{entry.isDictionaryEntry(prefs)
@@ -88,7 +88,7 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 				</tr>
 			) || <tr>
 				<td className={`font-geometric text-[11pt] ${commentStyle200}`}>{info.label}</td>
-				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} font-extralight text-[13pt]${isHighlighted ? " bg-primary text-primary-content" : ""}`}>{info.text}</td>
+				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${isHighlighted ? " bg-primary text-primary-content" : ""}`}>{info.text}</td>
 				<td className={commentStyle400} colSpan={labelColSpan + 2}>{(!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 			</tr>}
 		</button>
