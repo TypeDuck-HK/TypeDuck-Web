@@ -38,7 +38,7 @@ export default function App() {
 
 	const [deployStatus, updateDeployStatus] = useReducer((n: number) => n + 1, 0);
 	const preferences = usePreferences();
-	const { pageSize, enableCompletion, enableCorrection, enableSentence, enableLearning, isCangjie5 } = preferences;
+	const { pageSize, enableCompletion, enableCorrection, enableSentence, enableLearning, isCangjie5, isHeiTypeface } = preferences;
 	useEffect(() => {
 		async function updateRimePreferences() {
 			setLoading(true);
@@ -71,7 +71,7 @@ export default function App() {
 		</header>
 		<main className="m-auto p-8 max-w-7xl">
 			<Toolbar loading={loading} deployStatus={deployStatus} />
-			<textarea className="block w-full min-h-64 my-6 textarea textarea-bordered text-lg px-3" ref={setTextArea} {...NO_AUTO_FILL} />
+			<textarea className={`block w-full min-h-64 my-6 textarea textarea-bordered text-lg px-3 ${isHeiTypeface ? "font-hei" : "font-sung"}`} ref={setTextArea} {...NO_AUTO_FILL} />
 			{textArea && <CandidatePanel setLoading={setLoading} textArea={textArea} prefs={preferences} deployStatus={deployStatus} />}
 			<Preferences {...preferences} />
 		</main>
