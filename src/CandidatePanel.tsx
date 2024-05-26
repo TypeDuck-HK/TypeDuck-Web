@@ -9,10 +9,9 @@ import Rime from "./rime";
 import { isPrintable, notify } from "./utils";
 
 import type { InputState, InterfacePreferences, RimeResult } from "./types";
-import type { Dispatch, SetStateAction } from "react";
 
-export default function CandidatePanel({ setLoading, textArea, prefs, deployStatus }: {
-	setLoading: Dispatch<SetStateAction<boolean>>;
+export default function CandidatePanel({ runAsyncTask, textArea, prefs, deployStatus }: {
+	runAsyncTask(asyncTask: () => Promise<void>): void;
 	textArea: HTMLTextAreaElement;
 	prefs: InterfacePreferences;
 	deployStatus: number;
@@ -32,48 +31,47 @@ export default function CandidatePanel({ setLoading, textArea, prefs, deployStat
 		textArea.selectionStart = textArea.selectionEnd = selectionStart + newText.length;
 	}, [textArea]);
 
-	const handleRimeResult = useCallback(async (operation: () => Promise<RimeResult>, key?: string) => {
-		setLoading(true);
-		let type: "warning" | "error" | undefined;
-		try {
-			const result = await operation();
-			if (!result.success) {
-				type = "warning";
-			}
-			const state = result.isComposing
-				? {
-					inputBuffer: result.inputBuffer,
-					highlightedIndex: result.highlightedIndex,
-					candidates: result.candidates.map(
-						({ label, text, comment }, i) => new CandidateInfo(label || `${(i + 1) % 10}.`, text, comment),
-					),
-					isPrevDisabled: !result.page,
-					isNextDisabled: result.isLastPage,
+	const handleRimeResult = useCallback((promise: Promise<RimeResult>, key?: string) =>
+		runAsyncTask(async () => {
+			let type: "warning" | "error" | undefined;
+			try {
+				const result = await promise;
+				if (!result.success) {
+					type = "warning";
 				}
-				: inputState;
-			if (result.committed) {
-				insert(result.committed);
+				const state = result.isComposing
+					? {
+						inputBuffer: result.inputBuffer,
+						highlightedIndex: result.highlightedIndex,
+						candidates: result.candidates.map(
+							({ label, text, comment }, i) => new CandidateInfo(label || `${(i + 1) % 10}.`, text, comment),
+						),
+						isPrevDisabled: !result.page,
+						isNextDisabled: result.isLastPage,
+					}
+					: inputState;
+				if (result.committed) {
+					insert(result.committed);
+				}
+				else if (!state && key && isPrintable(key)) {
+					insert(key);
+				}
+				setInputState(result.isComposing ? state : undefined);
+				hideDictionary();
 			}
-			else if (!state && key && isPrintable(key)) {
-				insert(key);
+			catch {
+				type = "error";
 			}
-			setInputState(result.isComposing ? state : undefined);
-			hideDictionary();
-		}
-		catch {
-			type = "error";
-		}
-		if (type) {
-			notify(type, "執行操作", "performing the operation");
-		}
-		setLoading(false);
-		textArea.focus();
-	}, [hideDictionary, inputState, insert, setLoading, textArea]);
+			if (type) {
+				notify(type, "執行操作", "performing the operation");
+			}
+			textArea.focus();
+		}), [hideDictionary, inputState, insert, runAsyncTask, textArea]);
 
-	const processKey = useCallback((input: string, key?: string) => handleRimeResult(() => Rime.processKey(input), key), [handleRimeResult]);
-	const flipPage = useCallback((backward: boolean) => handleRimeResult(() => Rime.flipPage(backward)), [handleRimeResult]);
-	const selectCandidate = useCallback((index: number) => handleRimeResult(() => Rime.selectCandidate(index)), [handleRimeResult]);
-	const deleteCandidate = useCallback((index: number) => handleRimeResult(() => Rime.deleteCandidate(index)), [handleRimeResult]);
+	const processKey = useCallback((input: string, key?: string) => handleRimeResult(Rime.processKey(input), key), [handleRimeResult]);
+	const flipPage = useCallback((backward: boolean) => handleRimeResult(Rime.flipPage(backward)), [handleRimeResult]);
+	const selectCandidate = useCallback((index: number) => handleRimeResult(Rime.selectCandidate(index)), [handleRimeResult]);
+	const deleteCandidate = useCallback((index: number) => handleRimeResult(Rime.deleteCandidate(index)), [handleRimeResult]);
 
 	const parseKey = useCallback((event: KeyboardEvent) => {
 		const { code, key } = event;
@@ -123,13 +121,13 @@ export default function CandidatePanel({ setLoading, textArea, prefs, deployStat
 			const key = parseKey(event);
 			if (key) {
 				event.preventDefault();
-				void processKey(`{${key}}`, event.key);
+				processKey(`{${key}}`, event.key);
 			}
 		}
 		function onKeyUp(event: KeyboardEvent) {
 			if (inputState) {
 				const key = parseKey(event);
-				if (key) void processKey(`{Release+${key}}`);
+				if (key) processKey(`{Release+${key}}`);
 			}
 		}
 		document.addEventListener("keydown", onKeyDown);

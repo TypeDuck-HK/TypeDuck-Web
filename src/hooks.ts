@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { useLocalStorage as _useLocalStorage } from "react-use";
+import { useLocalStorage as _useLocalStorage, useSet } from "react-use";
 
 import { DEFAULT_PREFERENCES } from "./consts";
 import Rime, { subscribe } from "./rime";
@@ -15,6 +15,36 @@ export const useLocalStorage: {
 	<T>(key: string, initialValue: T, options?: UseLocalStorageOptions<T>): [T, Dispatch<SetStateAction<T>>, () => void];
 	<T>(key: string, initialValue?: T | undefined, options?: UseLocalStorageOptions<T>): [T | undefined, Dispatch<SetStateAction<T | undefined>>, () => void];
 } = _useLocalStorage;
+
+export function useLoading(): [boolean, (asyncTask: () => Promise<void>) => void, () => PromiseWithResolvers<void>] {
+	const [promises, { add, remove }] = useSet<Promise<void>>();
+
+	const runAsyncTask = useCallback((asyncTask: () => Promise<void>) => {
+		async function processAsyncTask() {
+			try {
+				await asyncTask();
+			}
+			finally {
+				remove(promise);
+			}
+		}
+		const promise = processAsyncTask();
+		add(promise);
+	}, [add, remove]);
+
+	const startAsyncTask = useCallback(() => {
+		let resolve!: () => void;
+		let reject!: () => void;
+		const promise = new Promise<void>((_resolve, _reject) => {
+			resolve = _resolve;
+			reject = _reject;
+		});
+		runAsyncTask(() => promise);
+		return { promise, resolve, reject };
+	}, [runAsyncTask]);
+
+	return [!!promises.size, runAsyncTask, startAsyncTask];
+}
 
 export function useRimeOption(option: string, defaultValue: boolean, deployStatus: number, localStorageKey?: string): [boolean, DispatchWithoutAction] {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -32,15 +62,12 @@ export function useRimeOption(option: string, defaultValue: boolean, deployStatu
 		void setOption();
 	}, [option, value, deployStatus]);
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(
+	useEffect(() =>
 		subscribe("optionChanged", (rimeOption, rimeValue) => {
 			if (rimeOption === option) {
 				setValue(rimeValue);
 			}
-		}),
-		[setValue],
-	);
+		}), [option, setValue]);
 
 	return [value, useCallback(() => setValue(value => !value), [setValue])];
 }
