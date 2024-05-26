@@ -15,26 +15,32 @@ export default function App() {
 	const [textArea, setTextArea] = useState<HTMLTextAreaElement | null>(null);
 	const [loading, setLoading] = useState(true);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(subscribe("initialized", success => {
-		if (!success) {
-			notify("error", "啟動輸入法引擎", "initializing the input method engine");
-		}
-		setLoading(false);
-	}));
+	useEffect(
+		subscribe("initialized", success => {
+			if (!success) {
+				notify("error", "啟動輸入法引擎", "initializing the input method engine");
+			}
+			setLoading(false);
+		}),
+		[setLoading],
+	);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(subscribe("deployStatusChanged", status => {
-		switch (status) {
-			case "start":
-				setLoading(true);
-				break;
-			case "failure":
-				notify("warning", "重新整理", "refreshing");
-				// falls through
-			case "success":
-				setLoading(false);
-				break;
-		}
-	}));
+	useEffect(
+		subscribe("deployStatusChanged", status => {
+			switch (status) {
+				case "start":
+					setLoading(true);
+					break;
+				case "failure":
+					notify("warning", "重新整理", "refreshing");
+					// falls through
+				case "success":
+					setLoading(false);
+					break;
+			}
+		}),
+		[setLoading],
+	);
 
 	const [deployStatus, updateDeployStatus] = useReducer((n: number) => n + 1, 0);
 	const preferences = usePreferences();
@@ -59,7 +65,7 @@ export default function App() {
 			updateDeployStatus();
 		}
 		void updateRimePreferences();
-	}, [pageSize, enableCompletion, enableCorrection, enableSentence, enableLearning, isCangjie5, updateDeployStatus]);
+	}, [pageSize, enableCompletion, enableCorrection, enableSentence, enableLearning, isCangjie5, setLoading, updateDeployStatus]);
 
 	return <>
 		<header className="p-8 border-b border-base-300 flex items-center">

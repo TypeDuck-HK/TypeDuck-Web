@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 import Candidate from "./Candidate";
 import CandidateInfo from "./CandidateInfo";
@@ -22,17 +22,17 @@ export default function CandidatePanel({ setLoading, textArea, prefs, deployStat
 	const candidateList = useRef<HTMLTableElement>(null);
 	const dictionaryPanel = useRef<HTMLDivElement>(null);
 
-	function insert(newText: string) {
+	const hideDictionary = useCallback(() => {
+		setShowDictionaryIndex(undefined);
+	}, [setShowDictionaryIndex]);
+
+	const insert = useCallback((newText: string) => {
 		const { selectionStart, selectionEnd } = textArea;
 		textArea.value = textArea.value.slice(0, selectionStart) + newText + textArea.value.slice(selectionEnd);
 		textArea.selectionStart = textArea.selectionEnd = selectionStart + newText.length;
-	}
+	}, [textArea]);
 
-	async function input(rimeKey: string, key?: string) {
-		return handleRimeResult(() => Rime.processKey(rimeKey), key);
-	}
-
-	async function handleRimeResult(operation: () => Promise<RimeResult>, key?: string) {
+	const handleRimeResult = useCallback(async (operation: () => Promise<RimeResult>, key?: string) => {
 		setLoading(true);
 		let type: "warning" | "error" | undefined;
 		try {
@@ -68,9 +68,14 @@ export default function CandidatePanel({ setLoading, textArea, prefs, deployStat
 		}
 		setLoading(false);
 		textArea.focus();
-	}
+	}, [hideDictionary, inputState, insert, setLoading, textArea]);
 
-	function parseKey(event: KeyboardEvent) {
+	const processKey = useCallback((input: string, key?: string) => handleRimeResult(() => Rime.processKey(input), key), [handleRimeResult]);
+	const flipPage = useCallback((backward: boolean) => handleRimeResult(() => Rime.flipPage(backward)), [handleRimeResult]);
+	const selectCandidate = useCallback((index: number) => handleRimeResult(() => Rime.selectCandidate(index)), [handleRimeResult]);
+	const deleteCandidate = useCallback((index: number) => handleRimeResult(() => Rime.deleteCandidate(index)), [handleRimeResult]);
+
+	const parseKey = useCallback((event: KeyboardEvent) => {
 		const { code, key } = event;
 		const hasControl = event.getModifierState("Control");
 		const hasMeta = event.getModifierState("Meta");
@@ -111,20 +116,20 @@ export default function CandidatePanel({ setLoading, textArea, prefs, deployStat
 			return [...modifiers].join("+");
 		}
 		return undefined;
-	}
+	}, [inputState, textArea]);
 
 	useEffect(() => {
 		function onKeyDown(event: KeyboardEvent) {
 			const key = parseKey(event);
 			if (key) {
 				event.preventDefault();
-				void input(`{${key}}`, event.key);
+				void processKey(`{${key}}`, event.key);
 			}
 		}
 		function onKeyUp(event: KeyboardEvent) {
 			if (inputState) {
 				const key = parseKey(event);
-				if (key) void input(`{Release+${key}}`);
+				if (key) void processKey(`{Release+${key}}`);
 			}
 		}
 		document.addEventListener("keydown", onKeyDown);
@@ -133,30 +138,14 @@ export default function CandidatePanel({ setLoading, textArea, prefs, deployStat
 			document.removeEventListener("keydown", onKeyDown);
 			document.removeEventListener("keyup", onKeyUp);
 		};
-	});
+	}, [inputState, parseKey, processKey]);
 
 	useEffect(() => {
 		setInputState(undefined);
 		hideDictionary();
-	}, [deployStatus]);
+	}, [deployStatus, setInputState, hideDictionary]);
 
-	async function flipPage(backward: boolean) {
-		return handleRimeResult(() => Rime.flipPage(backward));
-	}
-
-	async function selectCandidate(index: number) {
-		return handleRimeResult(() => Rime.selectCandidate(index));
-	}
-
-	async function deleteCandidate(index: number) {
-		return handleRimeResult(() => Rime.deleteCandidate(index));
-	}
-
-	function hideDictionary() {
-		setShowDictionaryIndex(undefined);
-	}
-
-	function hideDictionaryOnLeaveCandidate() {
+	const hideDictionaryOnLeaveCandidate = useCallback(() => {
 		function hideDictionaryOnLeaveDictionaryPanel() {
 			if (!candidateList.current?.matches(":hover")) {
 				hideDictionary();
@@ -171,7 +160,7 @@ export default function CandidatePanel({ setLoading, textArea, prefs, deployStat
 		else if (!candidateList.current?.matches(":hover")) {
 			hideDictionary();
 		}
-	}
+	}, [hideDictionary]);
 
 	const shouldShowDictionary = typeof showDictionaryIndex === "number";
 	return inputState && <CaretFollower textArea={textArea} className="candidate-panel">

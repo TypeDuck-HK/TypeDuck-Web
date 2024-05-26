@@ -33,11 +33,14 @@ export function useRimeOption(option: string, defaultValue: boolean, deployStatu
 	}, [option, value, deployStatus]);
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(subscribe("optionChanged", (rimeOption, rimeValue) => {
-		if (rimeOption === option) {
-			setValue(rimeValue);
-		}
-	}));
+	useEffect(
+		subscribe("optionChanged", (rimeOption, rimeValue) => {
+			if (rimeOption === option) {
+				setValue(rimeValue);
+			}
+		}),
+		[setValue],
+	);
 
 	return [value, useCallback(() => setValue(value => !value), [setValue])];
 }
