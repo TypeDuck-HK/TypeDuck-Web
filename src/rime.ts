@@ -39,7 +39,7 @@ for (const type of allListenerTypes) {
 
 const worker = new Worker("./worker.js");
 worker.addEventListener("message", ({ data }: MessageEvent<Payload>) => {
-	if (process.env.NODE_ENV !== "production") console.log("receive", data);
+	if (process.env.NODE_ENV !== "production" || location.search === "?debug") console.log("receive", data);
 	const { type } = data;
 	if (type === "listener") {
 		const { name, args } = data;
@@ -67,7 +67,7 @@ worker.addEventListener("message", ({ data }: MessageEvent<Payload>) => {
 });
 
 function postMessage(message: Message) {
-	if (process.env.NODE_ENV !== "production") console.log("post", message);
+	if (process.env.NODE_ENV !== "production" || location.search === "?debug") console.log("post", message);
 	const { name, args } = running = message;
 	worker.postMessage({ name, args });
 }

@@ -97,7 +97,7 @@ const RIME_USER_DIR = "/rime";
 const loadRime = new Promise<void>(resolve => {
 	globalThis.Module = {
 		printErr(message) {
-			if (process.env.NODE_ENV !== "production") {
+			if (process.env.NODE_ENV !== "production" || location.search === "?debug") {
 				const match = /^([IWEF])\S+ \S+ \S+ (.*)$/.exec(message);
 				if (match) {
 					console[({ I: "info", W: "warn", E: "error", F: "error" } as const)[match[1] as "I" | "W" | "E" | "F"]](`[${match[2]}`);
