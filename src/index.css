@@ -24,7 +24,7 @@
 		--font-hei: "Chiron Hei HK", "Chiron Hei HK WS";
 		--font-kai: "DFHKStdKai-B5", "BiauKaiHK", "BiauKai", "DFKai-SB", "KaiU";
 		--font-devanagari: "Nirmala UI", "Mangal";
-		--font-arabic: "Urdu Typesetting", "Tahoma";
+		--font-arabic: "Urdu Typesetting", "Noto Nastaliq Urdu", "Tahoma";
 		--font-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	}
 	a {
