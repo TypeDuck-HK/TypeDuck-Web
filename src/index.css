@@ -66,6 +66,9 @@
 		}
 	}
 }
+.candidates :lang(ur) {
+	@apply text-right;
+}
 .candidates button {
 	tr:first-child td:first-child {
 		@apply rounded-ss-md;
