@@ -178,7 +178,7 @@ export default function CandidatePanel({ runAsyncTask, textArea, prefs, deploySt
 					</button>
 				</div>
 			</div>
-			<table ref={candidateList} className="candidates w-full">
+			<table ref={candidateList} className="candidates">
 				{inputState.candidates.map((candidate, index) =>
 					<Candidate
 						key={index}

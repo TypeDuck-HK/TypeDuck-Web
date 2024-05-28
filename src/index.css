@@ -82,16 +82,16 @@
 }
 .candidates button {
 	tr:first-child td:first-child {
-		@apply rounded-ss-md;
+		@apply rounded-ss-md min-w-1.5;
 	}
 	tr:first-child td:last-child {
-		@apply rounded-se-md;
+		@apply rounded-se-md min-w-1.5;
 	}
 	tr:last-child td:first-child {
-		@apply rounded-es-md;
+		@apply rounded-es-md min-w-1.5;
 	}
 	tr:last-child td:last-child {
-		@apply rounded-ee-md;
+		@apply rounded-ee-md min-w-1.5;
 	}
 }
 @supports selector(:has(*)) {

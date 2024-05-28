@@ -84,12 +84,12 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 							return definitions.length ? [<td key={index} className={commentStyle400}>{definitions}</td>] : [];
 						})
 						: !!labelColSpan && <td className={commentStyle400} colSpan={labelColSpan}>{entry.formattedLabels?.join(" ")}</td>}
-					<td className={`font-geometric text-[11pt] ${commentStyle200} align-middle`}>{!index && info.hasDictionaryEntry(prefs) && "ⓘ"}</td>
+					<td className={`font-geometric text-[11pt] ${commentStyle200} align-middle text-right w-full`}>{!index && info.hasDictionaryEntry(prefs) && "ⓘ"}</td>
 				</tr>
 			) || <tr>
 				<td className={`font-geometric text-[11pt] ${commentStyle200}`}>{info.label}</td>
 				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${isHighlighted ? " bg-primary text-primary-content" : ""}`}>{info.text}</td>
-				<td className={commentStyle400} colSpan={labelColSpan + 2}>{(!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
+				<td className={`${commentStyle400} w-full`} colSpan={labelColSpan + 2}>{(!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 			</tr>}
 		</button>
 	</tbody>;
