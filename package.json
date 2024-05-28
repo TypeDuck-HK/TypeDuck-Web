@@ -41,9 +41,11 @@
 		"eslint-plugin-react-hooks": "^4.6.2",
 		"eslint-plugin-react-refresh": "^0.4.7",
 		"postcss": "^8.4.38",
+		"postcss-nesting": "^12.1.5",
 		"tailwindcss": "^3.4.3",
 		"typescript": "^5.4.5",
 		"vite": "^5.2.11"
 	},
-	"license": "BSD-3-Clause"
+	"license": "BSD-3-Clause",
+	"browserslist": "> 0.5% in HK and fully supports wasm and not dead"
 }

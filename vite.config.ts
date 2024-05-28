@@ -1,8 +1,9 @@
 import react from "@vitejs/plugin-react-swc";
 import autoprefixer from "autoprefixer";
+import postCSSNesting from "postcss-nesting";
 import tailwindcss from "tailwindcss";
+import tailwindcssNesting from "tailwindcss/nesting";
 
-import type { PluginCreator } from "postcss";
 import type { UserConfig } from "vite";
 
 export default {
@@ -11,8 +12,9 @@ export default {
 	css: {
 		postcss: {
 			plugins: [
-				tailwindcss as PluginCreator<unknown>,
-				autoprefixer,
+				tailwindcssNesting(postCSSNesting({ edition: "2024-02" })),
+				tailwindcss(),
+				autoprefixer(),
 			],
 		},
 	},

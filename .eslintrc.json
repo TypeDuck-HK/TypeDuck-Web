@@ -103,7 +103,11 @@
 		"import/newline-after-import": "error",
 		"import/no-absolute-path": "error",
 		"import/no-anonymous-default-export": ["warn", { "allowCallExpression": false }],
-		"import/no-extraneous-dependencies": ["error", { "includeInternal": true, "includeTypes": true }],
+		"import/no-extraneous-dependencies": ["error", {
+			"devDependencies": ["*.config.ts"],
+			"includeInternal": true,
+			"includeTypes": true
+		}],
 		"import/no-named-default": "error",
 		"import/no-self-import": "error",
 		"import/no-useless-path-segments": ["error", { "noUselessIndex": true }],
