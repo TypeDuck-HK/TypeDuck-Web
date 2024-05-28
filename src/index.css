@@ -9,6 +9,17 @@
 			font-size: 16px;
 		}
 	}
+	@font-face {
+		font-family: "Urdu Typesetting";
+		src: local("Urdu Typesetting");
+		size-adjust: 140%;
+		descent-override: 70%;
+	}
+	@font-face {
+		font-family: "Noto Nastaliq Urdu";
+		src: local("Noto Nastaliq Urdu");
+		descent-override: 70%;
+	}
 	:root {
 		--btn-text-case: none;
 		--toastify-toast-width: auto;
@@ -22,7 +33,7 @@
 		--font-geometric: "Century Gothic", "Avenir Next", "Avenir", "Futura";
 		--font-sung: "Chiron Sung HK", "Chiron Sung HK WS";
 		--font-hei: "Chiron Hei HK", "Chiron Hei HK WS";
-		--font-kai: "DFHKStdKai-B5", "BiauKaiHK", "BiauKai", "DFKai-SB", "KaiU";
+		--font-kai: "DFHKStdKai-B5", "BiauKaiHK", "BiauKai", "DFKai-SB", "KaiU", "Kaiti TC";
 		--font-devanagari: "Nirmala UI", "Mangal";
 		--font-arabic: "Urdu Typesetting", "Noto Nastaliq Urdu", "Tahoma";
 		--font-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -41,7 +52,7 @@
 		@apply font-devanagari text-[11pt];
 	}
 	:lang(ur) {
-		@apply font-arabic text-[13pt];
+		@apply font-arabic text-[10pt];
 	}
 }
 .tooltip {
@@ -61,7 +72,7 @@
 .candidates td {
 	@apply p-1 align-bottom text-left empty:p-0;
 	@supports selector(:has(*)) {
-		&:empty:not(:has(:not(:empty))) {
+		&:has(*):not(:has(:not(:empty))) {
 			@apply p-0;
 		}
 	}
@@ -101,7 +112,7 @@
 	}
 }
 .dictionary-panel {
-	@apply px-5 py-3 rounded-md bg-primary text-primary-content text-[12pt] whitespace-normal min-w-48;
+	@apply px-5 pt-3 pb-4 rounded-md bg-primary text-primary-content text-[12pt] whitespace-normal min-w-48;
 }
 .dictionary-panel > *:not(:last-child) {
 	@apply mb-3.5;
