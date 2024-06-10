@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import useLocalStorageState from "use-local-storage-state";
 import { useLocalStorage as _useLocalStorage, useSet } from "react-use";
 
 import { DEFAULT_PREFERENCES } from "./consts";
@@ -48,7 +49,7 @@ export function useLoading(): [boolean, (asyncTask: () => Promise<void>) => void
 
 export function useRimeOption(option: string, defaultValue: boolean, deployStatus: number, localStorageKey?: string): [boolean, DispatchWithoutAction] {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [value, setValue] = localStorageKey ? useLocalStorage(localStorageKey, defaultValue) : useState(defaultValue);
+	const [value, setValue] = localStorageKey ? useLocalStorageState(localStorageKey, { defaultValue }) : useState(defaultValue);
 
 	useEffect(() => {
 		async function setOption() {
