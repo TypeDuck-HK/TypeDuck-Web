@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useSet } from "react-use";
-import superjson from "superjson";
 import useLocalStorageState from "use-local-storage-state";
 
 import { DEFAULT_PREFERENCES, Language } from "./consts";
