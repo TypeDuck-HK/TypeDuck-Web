@@ -6,7 +6,12 @@ import useLocalStorageState from "use-local-storage-state";
 
 export default function ThemeSwitcher() {
 	const systemTheme = useMedia("(prefers-color-scheme: dark)") ? "dark" : "light";
-	const [theme = systemTheme, setTheme] = useLocalStorageState<"light" | "dark" | undefined>("theme");
+	const [theme = systemTheme, setTheme] = useLocalStorageState<"light" | "dark" | undefined>("theme", {
+		serializer: {
+			stringify: (v) => String(v),
+			parse: (s) => s,
+		},
+	});
 
 	useEffect(() => {
 		document.documentElement.dataset["theme"] = theme;

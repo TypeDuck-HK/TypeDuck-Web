@@ -4,7 +4,7 @@ import { useSet } from "react-use";
 import superjson from "superjson";
 import useLocalStorageState from "use-local-storage-state";
 
-import { DEFAULT_PREFERENCES } from "./consts";
+import { DEFAULT_PREFERENCES, Language } from "./consts";
 import Rime, { subscribe } from "./rime";
 import { notify } from "./utils";
 
@@ -75,7 +75,18 @@ export function usePreferences() {
 				key,
 				{
 					defaultValue,
-					serializer: key === "displayLanguages" ? superjson : JSON,
+					serializer:
+						key === "displayLanguages"
+							? {
+								stringify: (languages) => [...languages as Set<Language>].join(),
+								parse: (values) => new Set(values.split(",").map(value => value.trim() as Language)),
+							}
+							: typeof defaultValue === "string"
+							? {
+								stringify: (v) => String(v),
+								parse: (s) => s,
+							}
+							: JSON,
 				}
 			);
 			return [[key, optionValue], [`set${key[0].toUpperCase()}${key.slice(1)}`, setOptionValue]];
