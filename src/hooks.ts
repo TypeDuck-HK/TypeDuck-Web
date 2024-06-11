@@ -74,19 +74,18 @@ export function usePreferences() {
 				key,
 				{
 					defaultValue,
-					serializer:
-						key === "displayLanguages"
-							? {
-								stringify: (languages) => [...languages as Set<Language>].join(),
-								parse: (values) => new Set(values.split(",").map(value => value.trim() as Language)),
-							}
-							: typeof defaultValue === "string"
-							? {
-								stringify: (v) => String(v),
-								parse: (s) => s,
-							}
-							: JSON,
-				}
+					serializer: key === "displayLanguages"
+						? {
+							stringify: languages => [...languages as Set<Language>].join(),
+							parse: values => new Set(values.split(",").map(value => value.trim() as Language)),
+						}
+						: typeof defaultValue === "string"
+						? {
+							stringify: v => String(v),
+							parse: s => s,
+						}
+						: JSON,
+				},
 			);
 			return [[key, optionValue], [`set${key[0].toUpperCase()}${key.slice(1)}`, setOptionValue]];
 		}),

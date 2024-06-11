@@ -8,8 +8,8 @@ export default function ThemeSwitcher() {
 	const systemTheme = useMedia("(prefers-color-scheme: dark)") ? "dark" : "light";
 	const [theme = systemTheme, setTheme] = useLocalStorageState<"light" | "dark" | undefined>("theme", {
 		serializer: {
-			stringify: (v) => String(v),
-			parse: (s) => s,
+			stringify: v => String(v),
+			parse: s => s,
 		},
 	});
 
