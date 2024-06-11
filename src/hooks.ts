@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useSet } from "react-use";
 import superjson from "superjson";
-import _useLocalStorageState from "use-local-storage-state";
+import useLocalStorageState from "use-local-storage-state";
 
 import { DEFAULT_PREFERENCES } from "./consts";
 import Rime, { subscribe } from "./rime";
@@ -10,8 +10,6 @@ import { notify } from "./utils";
 
 import type { PreferencesWithSetter } from "./types";
 import type { DispatchWithoutAction } from "react";
-
-export const useLocalStorageState = _useLocalStorageState;
 
 export function useLoading(): [boolean, (asyncTask: () => Promise<void>) => void, () => PromiseWithResolvers<void>] {
 	const [promises, { add, remove }] = useSet<Promise<void>>();

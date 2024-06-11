@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useMedia } from "react-use";
 
-import { useLocalStorageState } from "./hooks";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function ThemeSwitcher() {
 	const systemTheme = useMedia("(prefers-color-scheme: dark)") ? "dark" : "light";
