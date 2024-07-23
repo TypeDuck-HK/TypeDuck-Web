@@ -7,7 +7,7 @@ import { DEFAULT_PREFERENCES, Language } from "./consts";
 import Rime, { subscribe } from "./rime";
 import { notify } from "./utils";
 
-import type { PreferencesWithSetter } from "./types";
+import type { Preferences, PreferencesWithSetter } from "./types";
 import type { DispatchWithoutAction } from "react";
 
 export function useLoading(): [boolean, (asyncTask: () => Promise<void>) => void, () => PromiseWithResolvers<void>] {
@@ -68,7 +68,7 @@ export function useRimeOption(option: string, defaultValue: boolean, deployStatu
 
 export function usePreferences() {
 	return Object.fromEntries(
-		Object.entries(DEFAULT_PREFERENCES).flatMap(([key, defaultValue]) => {
+		Object.entries(DEFAULT_PREFERENCES).flatMap(([key, defaultValue]: [string, Preferences[keyof Preferences]]) => {
 			// eslint-disable-next-line react-hooks/rules-of-hooks
 			const [optionValue, setOptionValue] = useLocalStorageState(
 				key,
@@ -81,8 +81,8 @@ export function usePreferences() {
 						}
 						: typeof defaultValue === "string"
 						? {
-							stringify: v => String(v),
-							parse: s => s,
+							stringify: String,
+							parse: String,
 						}
 						: JSON,
 				},
