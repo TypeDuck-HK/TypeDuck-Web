@@ -74,13 +74,11 @@
 		"@typescript-eslint/default-param-last": "error",
 		"@typescript-eslint/no-confusing-void-expression": "off",
 		"@typescript-eslint/no-loop-func": "warn",
-		"@typescript-eslint/no-misused-promises": "off",
+		"@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-unnecessary-qualifier": "error",
 		"@typescript-eslint/no-useless-empty-export": "error",
-		"@typescript-eslint/parameter-properties": ["error", {
-			"prefer": "parameter-property"
-		}],
+		"@typescript-eslint/parameter-properties": ["error", { "prefer": "parameter-property" }],
 		"@typescript-eslint/prefer-nullish-coalescing": "off",
 		"@typescript-eslint/prefer-regexp-exec": "error",
 		"@typescript-eslint/prefer-string-starts-ends-with": "off",
