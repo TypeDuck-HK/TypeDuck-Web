@@ -68,6 +68,12 @@ bun run lib
 bun run wasm
 ```
 
+### Installing Frontend Dependencies
+
+```sh
+bun i
+```
+
 ### Building the Worker Script
 
 ```sh
