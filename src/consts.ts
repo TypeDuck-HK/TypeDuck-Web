@@ -81,10 +81,10 @@ export const litColReadings: Record<string, string | undefined> = {
 };
 
 export const registers: Record<string, string | undefined> = {
-	wri: "written 書面語",
-	ver: "vernacular 口語",
-	for: "formal 公文體",
-	lzh: "classical Chinese 文言",
+	cmn: "written 書面語",
+	yue: "vernacular 口語",
+	lzh: "formal 公文體",
+	och: "classical Chinese 文言",
 };
 
 export const partsOfSpeech: Record<string, string | undefined> = {
@@ -107,6 +107,7 @@ export const labels: Record<string, string | undefined> = {
 	org: "organisation 機構",
 	person: "person 人名",
 	place: "place 地名",
+	pop: "popular culture 流行文化",
 	reli: "religion 宗教",
 	rare: "rare 罕見",
 	composition: "compound 詞組",
