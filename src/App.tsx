@@ -74,6 +74,9 @@ export default function App() {
 			<ThemeSwitcher />
 		</header>
 		<main className="m-auto p-8 max-w-7xl">
+			<div className="bg-red-100 border border-red-700 rounded-lg text-xl font-bold text-red-900 p-6 mb-6">
+				Alpha 版本：僅供內部測試之用，請勿廣傳 Alpha version: For internal testing only. Do not spread widely
+			</div>
 			<Toolbar loading={loading} deployStatus={deployStatus} />
 			<textarea className={`block w-full min-h-64 my-6 textarea textarea-bordered text-lg px-3 ${isHeiTypeface ? "font-hei" : "font-sung"}`} ref={setTextArea} {...NO_AUTO_FILL} />
 			{textArea && <CandidatePanel runAsyncTask={runAsyncTask} textArea={textArea} prefs={preferences} deployStatus={deployStatus} />}
@@ -81,7 +84,7 @@ export default function App() {
 		</main>
 		<footer className="footer footer-center p-6 bg-secondary text-secondary-content">
 			<aside>
-				© Copyright 2024 TypeDuck Team. All rights reserved.
+				© Copyright 2026 TypeDuck Team. All rights reserved.
 				<a href="https://github.com/TypeDuck-HK/TypeDuck-Web" target="_blank" rel="noreferrer">
 					Source Code
 				</a>
