@@ -12,7 +12,8 @@ const boostVersion = "1.85.0";
 const archiveName = `boost-${boostVersion}-cmake.tar.xz`;
 
 if (!await exists(archiveName)) {
-	await Bun.write(archiveName, await fetch(`https://github.com/boostorg/boost/releases/download/boost-${boostVersion}/${archiveName}`));
+	const response = await fetch(`https://github.com/boostorg/boost/releases/download/boost-${boostVersion}/${archiveName}`);
+	await Bun.write(archiveName, await response.blob());
 	await $`rm -rf boost`;
 }
 if (!await exists("boost")) {
