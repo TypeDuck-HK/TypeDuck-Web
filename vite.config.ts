@@ -7,7 +7,7 @@ import tailwindcssNesting from "tailwindcss/nesting";
 import type { UserConfig } from "vite";
 
 export default {
-	base: "/web/",
+	base: "/TypeDuck-Web/aap2-alpha/",
 	plugins: [react()],
 	css: {
 		postcss: {
