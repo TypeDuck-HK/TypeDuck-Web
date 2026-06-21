@@ -22,13 +22,15 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 								</div>,
 						)}
 						{letSome(
-							[entry.formattedPartsOfSpeech, entry.formattedRegister, entry.formattedLabels, entry.properties.definition[prefs.mainLanguage]],
-							(partsOfSpeech, register, labels, mainDefinition) =>
+							[entry.formattedPartsOfSpeech, entry.formattedRegister, entry.formattedLabels, entry.canonicalReference, entry.properties.definition[prefs.mainLanguage]],
+							(partsOfSpeech, register, labels, canonicalReference, mainDefinition) =>
 								<div className="entry-body">
 									{partsOfSpeech?.map((partOfSpeech, i) => <span key={i} className="pos">{partOfSpeech}</span>)}
 									{register && <span className="text-primary-content-300 italic whitespace-nowrap">{register}</span>}
 									{labels?.map((label, i) => <span key={i} className="lbl">{label}</span>)}
-									{mainDefinition && <span className="definition" lang={LANGUAGE_CODES[prefs.mainLanguage]}>{mainDefinition}</span>}
+									{canonicalReference
+										? <span className="text-primary-content-300">→{canonicalReference}</span>
+										: mainDefinition && <span className="definition" lang={LANGUAGE_CODES[prefs.mainLanguage]}>{mainDefinition}</span>}
 								</div>,
 						)}
 						{letSome(
@@ -39,7 +41,7 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 										<tr key={key}>
 											<th>{name}</th>
 											<td className={prefs.isHeiTypeface ? "font-hei" : "font-sung"}>
-												{value.split("，").map((line, i) => <div key={i}>{line}</div>)}
+												{value.split("|").map((line, i) => <div key={i}>{line}</div>)}
 											</td>
 										</tr>
 									)}
