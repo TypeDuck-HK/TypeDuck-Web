@@ -74,7 +74,7 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 						<div className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${isHighlighted ? " text-primary-content" : ""}${showJyutping ? " tracking-[8pt]" : ""}`}>{entry.honzi}</div>
 					</td>
 					<td className={commentStyle400}>{!index && (!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
-					{entry.isDictionaryEntry(prefs)
+					{entry.isDictionaryEntry(prefs) && !entry.canonicalReference
 						? definitionLayout.flatMap((languages, index) => {
 							const definitions = languages.flatMap(language =>
 								prefs.displayLanguages.has(language)
@@ -83,7 +83,9 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 							);
 							return definitions.length ? [<td key={index} className={commentStyle400}>{definitions}</td>] : [];
 						})
-						: !!labelColSpan && <td className={commentStyle400} colSpan={labelColSpan}>{entry.formattedLabels?.join(" ")}</td>}
+						: !!labelColSpan && <td className={commentStyle400} colSpan={labelColSpan}>
+							{entry.canonicalReference ? `→${entry.canonicalReference}` : entry.formattedLabels?.join(" ")}
+						</td>}
 					<td className={`font-geometric text-[11pt] ${commentStyle200} align-middle text-right w-full`}>{!index && info.hasDictionaryEntry(prefs) && "ⓘ"}</td>
 				</tr>
 			) || <tr>

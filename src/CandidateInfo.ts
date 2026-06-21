@@ -46,9 +46,6 @@ export class CandidateEntry {
 	jyutping?: string;
 	canonicalHonzi?: string;
 	canonicalJyutping?: string;
-	componentsHonzi?: string;
-	componentsJyutping?: string;
-	pronOrder?: string;
 	pronLabel?: string;
 	litColReading?: string;
 	properties: {
@@ -71,19 +68,16 @@ export class CandidateEntry {
 		}
 		// dprint-ignore
 		const [
-			matchInputBuffer, honzi, jyutping, displayedHonzi, displayedJyutping,
-			canonicalHonzi, canonicalJyutping, componentsHonzi, componentsJyutping,
-			pronOrder, pronLabel, litColReading, partOfSpeech, register, label,
-			written, vernacular, collocation, eng, hin, urd, nep, ind
+			matchInputBuffer, honzi, jyutping, canonicalHonzi, canonicalJyutping,
+			_componentsHonzi, _componentsJyutping, pronLabel, litColReading,
+			partOfSpeech, register, label, written, vernacular, collocation,
+			eng, hin, urd, nep, ind
 		] = parseCSV(value);
 		this.matchInputBuffer = matchInputBuffer;
-		this.honzi = displayedHonzi || honzi;
-		this.jyutping = formatJyutping(displayedJyutping || jyutping);
+		this.honzi = honzi;
+		this.jyutping = formatJyutping(jyutping);
 		this.canonicalHonzi = canonicalHonzi;
 		this.canonicalJyutping = formatJyutping(canonicalJyutping);
-		this.componentsHonzi = componentsHonzi;
-		this.componentsJyutping = componentsJyutping;
-		this.pronOrder = pronOrder;
 		this.pronLabel = pronLabel;
 		this.litColReading = litColReading;
 		// dprint-ignore
