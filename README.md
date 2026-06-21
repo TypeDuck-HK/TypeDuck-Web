@@ -86,7 +86,7 @@ bun run worker
 bun start
 ```
 
-However, the above command is slow to start, at least on Windows. For a faster development experience, you may want to simply build the project.
+However, the above command may be slow to start on Windows. For a faster development experience, you may want to simply build the project.
 
 ### Building the Project
 

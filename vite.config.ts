@@ -21,4 +21,9 @@ export default {
 	build: {
 		target: "es2017",
 	},
+	server: {
+		watch: {
+			ignored: ["**/boost/**", "**/build/**", "**/librime/**", "**/schema/**"],
+		},
+	},
 } satisfies UserConfig;
