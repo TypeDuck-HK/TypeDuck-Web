@@ -88,7 +88,7 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 				</tr>
 			) || <tr>
 				<td className={`font-geometric text-[11pt] ${background} text-base-content-200`}>{info.label}</td>
-				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]`}>{info.text}</td>
+				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt] ${background}`}>{info.text}</td>
 				<td className={`${background} text-base-content-400 w-full`} colSpan={labelColSpan + 2}>{(!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 			</tr>}
 		</button>
