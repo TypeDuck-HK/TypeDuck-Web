@@ -66,7 +66,7 @@ export default function App() {
 		}), [pageSize, enableCompletion, enableCorrection, enableSentence, enableLearning, isCangjie5, updateDeployStatus, runAsyncTask]);
 
 	return <>
-		<header className="p-8 border-b border-base-300 flex items-center">
+		<header className="p-8 bg-base-100 border-b border-base-300 flex items-center">
 			<a className="mr-4 w-48" href="/">
 				<img src="/images/logo.png" alt="TypeDuck Logo" />
 			</a>

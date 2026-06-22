@@ -47,9 +47,7 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 		hideDictionary();
 	}
 	const showJyutping = prefs.showRomanization === ShowRomanization.Always || prefs.showRomanization === ShowRomanization.ReverseOnly && info.isReverseLookup;
-	const commentStyle200 = isHighlighted ? "bg-primary text-primary-content-200" : "text-base-content-200";
-	const commentStyle300 = isHighlighted ? "bg-primary text-primary-content-300" : "text-base-content-300";
-	const commentStyle400 = isHighlighted ? "bg-primary text-primary-content-400" : "text-base-content-400";
+	const background = isHighlighted ? "bg-highlighted" : "";
 	const labelColSpan = definitionLayout.filter(languages => languages.some(language => prefs.displayLanguages.has(language))).length;
 	return <tbody>
 		<button
@@ -68,12 +66,12 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 			onTouchCancel={_hideDictionary}>
 			{info.matchedEntries?.map((entry, index) =>
 				<tr key={index}>
-					<td className={`font-geometric text-[11pt] ${commentStyle200}`}>{!index && info.label}</td>
-					<td className={isHighlighted ? "bg-primary" : ""}>
-						{showJyutping && <div className={`text-[10pt] ${commentStyle300}`}>{entry.jyutping}</div>}
-						<div className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${isHighlighted ? " text-primary-content" : ""}${showJyutping ? " tracking-[8pt]" : ""}`}>{entry.honzi}</div>
+					<td className={`font-geometric text-[11pt] ${background} text-base-content-200`}>{!index && info.label}</td>
+					<td className={background}>
+						{showJyutping && <div className={`text-[10pt] ${background} text-base-content-300`}>{entry.jyutping}</div>}
+						<div className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${showJyutping ? " tracking-[8pt]" : ""}`}>{entry.honzi}</div>
 					</td>
-					<td className={commentStyle400}>{!index && (!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
+					<td className={`${background} text-base-content-400`}>{!index && (!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 					{entry.isDictionaryEntry(prefs) && !entry.canonicalReference
 						? definitionLayout.flatMap((languages, index) => {
 							const definitions = languages.flatMap(language =>
@@ -81,17 +79,17 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 									? [<div key={language} lang={LANGUAGE_CODES[language]}>{entry.properties.definition[language]}</div>]
 									: []
 							);
-							return definitions.length ? [<td key={index} className={commentStyle400}>{definitions}</td>] : [];
+							return definitions.length ? [<td key={index} className={`${background} text-base-content-400`}>{definitions}</td>] : [];
 						})
-						: !!labelColSpan && <td className={commentStyle400} colSpan={labelColSpan}>
+						: !!labelColSpan && <td className={`${background} text-base-content-400`} colSpan={labelColSpan}>
 							{entry.canonicalReference ? `→${entry.canonicalReference}` : entry.formattedLabels?.join(" ")}
 						</td>}
-					<td className={`font-geometric text-[11pt] ${commentStyle200} align-middle text-right w-full`}>{!index && info.hasDictionaryEntry(prefs) && "ⓘ"}</td>
+					<td className={`font-geometric text-[11pt] ${background} text-base-content-200 align-middle text-right w-full`}>{!index && info.hasDictionaryEntry(prefs) && "ⓘ"}</td>
 				</tr>
 			) || <tr>
-				<td className={`font-geometric text-[11pt] ${commentStyle200}`}>{info.label}</td>
-				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${isHighlighted ? " bg-primary text-primary-content" : ""}`}>{info.text}</td>
-				<td className={`${commentStyle400} w-full`} colSpan={labelColSpan + 2}>{(!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
+				<td className={`font-geometric text-[11pt] ${background} text-base-content-200`}>{info.label}</td>
+				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]`}>{info.text}</td>
+				<td className={`${background} text-base-content-400 w-full`} colSpan={labelColSpan + 2}>{(!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 			</tr>}
 		</button>
 	</tbody>;

@@ -17,8 +17,8 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 							(honzi, jyutping, pronunciationType) =>
 								<div className="entry-head">
 									{honzi && <span className={`${prefs.isHeiTypeface ? "font-kai-fallback-hei" : "font-kai-fallback-sung"} text-[32pt] whitespace-nowrap`}>{honzi}</span>}
-									{jyutping && <span className="text-[15pt] text-primary-content-300 whitespace-nowrap">{jyutping}</span>}
-									{pronunciationType && <span className="text-primary-content-300 whitespace-nowrap">{pronunciationType}</span>}
+									{jyutping && <span className="text-[15pt] text-base-content-300 whitespace-nowrap">{jyutping}</span>}
+									{pronunciationType && <span className="text-base-content-300 whitespace-nowrap">{pronunciationType}</span>}
 								</div>,
 						)}
 						{letSome(
@@ -26,10 +26,10 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 							(partsOfSpeech, register, labels, canonicalReference, mainDefinition) =>
 								<div className="entry-body">
 									{partsOfSpeech?.map((partOfSpeech, i) => <span key={i} className="pos">{partOfSpeech}</span>)}
-									{register && <span className="text-primary-content-300 italic whitespace-nowrap">{register}</span>}
+									{register && <span className="text-base-content-300 italic whitespace-nowrap">{register}</span>}
 									{labels?.map((label, i) => <span key={i} className="lbl">{label}</span>)}
 									{canonicalReference
-										? <span className="text-primary-content-300">→{canonicalReference}</span>
+										? <span className="text-base-content-300">→{canonicalReference}</span>
 										: mainDefinition && <span className="definition" lang={LANGUAGE_CODES[prefs.mainLanguage]}>{mainDefinition}</span>}
 								</div>,
 						)}

@@ -37,9 +37,11 @@
 		--font-devanagari: "Nirmala UI", "Mangal";
 		--font-arabic: "Urdu Typesetting", "Noto Nastaliq Urdu", "Tahoma";
 		--font-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+		@apply bg-base-200;
 	}
 	a {
-		@apply link link-primary no-underline transition-colors;
+		@apply link link-primary text-link hover:text-link-focus no-underline transition-colors;
 	}
 	:lang(en) {
 		@apply font-sans text-[12pt];
@@ -61,13 +63,13 @@
 	--tooltip-offset: calc(100% + var(--tooltip-tail));
 }
 .btn-toolbar {
-	@apply btn btn-square text-xl bg-base-300 border-base-300 hover:bg-base-400 hover:border-base-400;
+	@apply btn btn-square text-xl bg-neutral border-base-300 hover:bg-base-400 hover:border-base-400;
 }
 .candidate-panel {
-	@apply flex absolute shadow-lg border-[0.1875rem] border-base-400 bg-base-200 rounded-[0.5625rem] z-50 overflow-hidden leading-snug whitespace-nowrap;
+	@apply flex absolute shadow-lg border-[0.1875rem] border-base-400 bg-base-100 rounded-[0.5625rem] z-50 overflow-hidden leading-snug whitespace-nowrap;
 }
 .page-nav {
-	@apply btn btn-ghost text-primary text-4xl h-[unset] min-h-[unset] leading-[1.875rem] px-2 rounded-md hover:bg-base-400 hover:border-base-400 disabled:bg-transparent disabled:text-base-500;
+	@apply btn btn-ghost text-primary-content-200 text-4xl h-[unset] min-h-[unset] leading-[1.875rem] px-2 rounded-md hover:bg-base-400 hover:border-base-400 disabled:bg-transparent disabled:text-base-500;
 }
 .candidates td {
 	@apply p-1 align-bottom text-left empty:p-0;
@@ -106,13 +108,13 @@
 				bottom left;
 			background-repeat: no-repeat;
 			/* prettier-ignore */
-			background-image: radial-gradient(circle at top left, transparent 0.5rem, theme(colors.primary) calc(0.5rem + 1px)),
-							  radial-gradient(circle at bottom left, transparent 0.5rem, theme(colors.primary) calc(0.5rem + 1px));
+			background-image: radial-gradient(circle at top left, transparent 0.5rem, theme(colors.highlighted) calc(0.5rem + 1px)),
+							  radial-gradient(circle at bottom left, transparent 0.5rem, theme(colors.highlighted) calc(0.5rem + 1px));
 		}
 	}
 }
 .dictionary-panel {
-	@apply px-5 pt-3 pb-4 rounded-md bg-primary text-primary-content text-[12pt] whitespace-normal min-w-48;
+	@apply px-5 pt-3 pb-4 rounded-md bg-base-300 text-[12pt] whitespace-normal min-w-48 z-50;
 }
 .dictionary-panel > *:not(:last-child) {
 	@apply mb-3.5;
@@ -125,10 +127,10 @@
 	@apply ml-4;
 }
 .pos {
-	@apply font-light text-[10pt] leading-7 text-primary-content-300 border border-primary-content-500 rounded p-0.5 whitespace-nowrap;
+	@apply font-light text-[10pt] leading-7 text-base-content-300 border border-base-content-300/65 rounded p-0.5 whitespace-nowrap;
 }
 .lbl {
-	@apply text-primary-content-300 whitespace-nowrap;
+	@apply text-base-content-300 whitespace-nowrap;
 }
 .pos + .pos,
 .lbl + .lbl {
@@ -136,7 +138,7 @@
 }
 .dictionary-panel {
 	th {
-		@apply text-right text-primary-content-300 align-baseline font-normal whitespace-nowrap;
+		@apply text-right text-base-content-300 align-baseline font-normal whitespace-nowrap;
 	}
 	td {
 		@apply align-baseline pl-3;
@@ -147,4 +149,10 @@
 	&::after {
 		@apply absolute top-full left-1/2 -translate-x-1/2 text-sm leading-6;
 	}
+}
+.btn-outline.btn-primary {
+	@apply text-primary-content-200 border-primary;
+}
+.toggle {
+	--tglbg: theme(colors.base-200);
 }
