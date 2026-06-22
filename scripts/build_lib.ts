@@ -12,6 +12,7 @@ const CMAKE_FIND_ROOT_PATH = `${DESTDIR}/usr`;
 const CMAKE_DEF = {
 	raw: `\
         -G Ninja \
+        -DCMAKE_POLICY_VERSION_MINIMUM:STRING=3.5 \
         -DCMAKE_INSTALL_PREFIX:PATH=/usr \
         -DCMAKE_BUILD_TYPE:STRING=${BUILD_TYPE} \
         -DBUILD_SHARED_LIBS:BOOL=OFF \
