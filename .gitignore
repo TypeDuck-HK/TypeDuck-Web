@@ -8,6 +8,7 @@ tsconfig.tsbuildinfo
 
 node_modules
 boost-*.tar.xz
+boost-*
 boost
 build
 public
