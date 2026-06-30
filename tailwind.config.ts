@@ -8,15 +8,13 @@ export default {
 	content: ["./src/**/*"],
 	theme: {
 		fontFamily: {
-			"serif": ["var(--font-serif)", "var(--font-emoji)"],
-			"sans": ["var(--font-sans)", "var(--font-emoji)"],
-			"geometric": ["var(--font-geometric)", "var(--font-sans)", "var(--font-emoji)"],
-			"sung": ["var(--font-sung)", "var(--font-serif)", "var(--font-emoji)"],
-			"hei": ["var(--font-hei)", "var(--font-sans)", "var(--font-emoji)"],
-			"kai-fallback-sung": ["var(--font-kai)", "var(--font-sung)", "var(--font-serif)", "var(--font-emoji)"],
-			"kai-fallback-hei": ["var(--font-kai)", "var(--font-hei)", "var(--font-sans)", "var(--font-emoji)"],
-			"devanagari": ["var(--font-devanagari)", "var(--font-sans)", "var(--font-emoji)"],
-			"arabic": ["var(--font-arabic)", "var(--font-sans)", "var(--font-emoji)"],
+			serif: ["var(--font-serif)", "var(--font-emoji)"],
+			sans: ["var(--font-sans)", "var(--font-emoji)"],
+			geometric: ["var(--font-geometric)", "var(--font-sans)", "var(--font-emoji)"],
+			sung: ["var(--font-sung)", "var(--font-serif)", "var(--font-emoji)"],
+			hei: ["var(--font-hei)", "var(--font-sans)", "var(--font-emoji)"],
+			devanagari: ["var(--font-devanagari)", "var(--font-sans)", "var(--font-emoji)"],
+			arabic: ["var(--font-arabic)", "var(--font-sans)", "var(--font-emoji)"],
 		},
 		colors: {
 			"primary-content-200": "rgb(var(--primary-content-200) / <alpha-value>)",
