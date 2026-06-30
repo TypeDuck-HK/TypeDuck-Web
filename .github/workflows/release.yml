@@ -13,7 +13,7 @@ jobs:
             contents: write
         steps:
             - name: Checkout Latest Commit
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                   filter: blob:none
             - name: Tag the Latest Commit
@@ -21,7 +21,7 @@ jobs:
                   git tag -f latest
                   git push -f origin latest
             - name: Download Artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v7
               with:
                   name: TypeDuck-Web
             - name: Release

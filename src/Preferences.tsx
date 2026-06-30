@@ -13,7 +13,7 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 		<h3 className="font-bold text-2xl mb-2">輸入法設定 IME Settings</h3>
 		<ul>
 			<li>
-				<fieldset className="border border-base-300 rounded px-3">
+				<fieldset className="border border-neutral rounded px-3">
 					<legend className="text-xl text-base-content mb-1 px-2">顯示語言 Display Languages</legend>
 					{(Object.entries(LANGUAGE_LABELS) as [Language, string][]).map(([language, label]) =>
 						<RadioCheckbox
@@ -64,7 +64,7 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 				</div>
 			</li>
 			<li>
-				<fieldset className="border border-base-300 rounded px-3 pb-2 mb-1">
+				<fieldset className="border border-neutral rounded px-3 pb-2 mb-1">
 					<legend className="text-xl text-base-content my-2 px-2">候選詞粵拼 Candidates Jyutping</legend>
 					{(Object.entries(SHOW_ROMANIZATION_LABELS) as [ShowRomanization, string][]).map(([value, label]) =>
 						<Radio

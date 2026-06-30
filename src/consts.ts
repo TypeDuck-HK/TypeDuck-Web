@@ -69,10 +69,15 @@ export const NO_AUTO_FILL = {
 export const definitionLayout = [[Language.Eng, Language.Ind], [Language.Hin, Language.Nep], [Language.Urd]];
 
 export const otherData: Record<string, Exclude<keyof CandidateEntry["properties"], "definition">> = {
-	"Standard Form 標準字形": "normalized",
 	"Written Form 書面語": "written",
 	"Vernacular Form 口語": "vernacular",
 	"Collocation 配搭": "collocation",
+};
+
+export const pronunciationLabels: Record<string, string | undefined> = {
+	sandhi: "changed tone 變音",
+	semantic_reading: "semantic reading 訓讀",
+	creative_reading: "creative reading 生造音",
 };
 
 export const litColReadings: Record<string, string | undefined> = {
@@ -81,10 +86,11 @@ export const litColReadings: Record<string, string | undefined> = {
 };
 
 export const registers: Record<string, string | undefined> = {
-	wri: "written 書面語",
-	ver: "vernacular 口語",
-	for: "formal 公文體",
-	lzh: "classical Chinese 文言",
+	cmn: "written 書面語",
+	yue: "vernacular 口語",
+	lzh: "formal 公文體",
+	och: "classical Chinese 文言",
+	sit: "chars. for proper noun 專有名詞用字",
 };
 
 export const partsOfSpeech: Record<string, string | undefined> = {
@@ -107,6 +113,7 @@ export const labels: Record<string, string | undefined> = {
 	org: "organisation 機構",
 	person: "person 人名",
 	place: "place 地名",
+	pop: "popular culture 流行文化",
 	reli: "religion 宗教",
 	rare: "rare 罕見",
 	composition: "compound 詞組",
@@ -115,7 +122,6 @@ export const labels: Record<string, string | undefined> = {
 export const checkColumns: (keyof CandidateEntry["properties"])[] = [
 	"partOfSpeech",
 	"register",
-	"normalized",
 	"written",
 	"vernacular",
 	"collocation",

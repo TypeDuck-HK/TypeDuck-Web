@@ -66,7 +66,7 @@ export default function App() {
 		}), [pageSize, enableCompletion, enableCorrection, enableSentence, enableLearning, isCangjie5, updateDeployStatus, runAsyncTask]);
 
 	return <>
-		<header className="p-8 border-b border-base-300 flex items-center">
+		<header className="p-8 bg-base-100 border-b border-base-300 flex items-center">
 			<a className="mr-4 w-48" href="/">
 				<img src="/images/logo.png" alt="TypeDuck Logo" />
 			</a>
@@ -81,7 +81,7 @@ export default function App() {
 		</main>
 		<footer className="footer footer-center p-6 bg-secondary text-secondary-content">
 			<aside>
-				© Copyright 2024 TypeDuck Team. All rights reserved.
+				© Copyright 2026 TypeDuck Team. All rights reserved.
 				<a href="https://github.com/TypeDuck-HK/TypeDuck-Web" target="_blank" rel="noreferrer">
 					Source Code
 				</a>

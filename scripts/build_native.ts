@@ -13,6 +13,7 @@ const dstRime = "build/librime_native";
 const CMAKE_INSTALL_PREFIX = `"${root}/librime"`;
 const CMAKE_DEF_COMMON = `\
     -G Ninja \
+    -DCMAKE_POLICY_VERSION_MINIMUM:STRING=3.5 \
     -DCMAKE_BUILD_TYPE:STRING=Release ${
 	PLATFORM === "win32"
 		? `\

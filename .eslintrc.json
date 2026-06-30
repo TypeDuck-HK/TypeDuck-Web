@@ -72,6 +72,7 @@
 
 		"@typescript-eslint/consistent-type-exports": "error",
 		"@typescript-eslint/default-param-last": "error",
+		"@typescript-eslint/no-unused-vars": ["error", { "destructuredArrayIgnorePattern": "^_" }],
 		"@typescript-eslint/no-confusing-void-expression": "off",
 		"@typescript-eslint/no-loop-func": "warn",
 		"@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],

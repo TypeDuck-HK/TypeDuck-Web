@@ -1,9 +1,19 @@
-import { LANGUAGE_CODES, LANGUAGE_NAMES, Language, checkColumns, labels, litColReadings, otherData, partsOfSpeech, registers } from "./consts";
+import { LANGUAGE_CODES, LANGUAGE_NAMES, Language, checkColumns, labels, litColReadings, otherData, partsOfSpeech, pronunciationLabels, registers } from "./consts";
 import { ConsumedString, nonEmptyArrayOrUndefined, parseCSV } from "./utils";
 
 import type { InterfacePreferences } from "./types";
 
 type KeyNameValue = [key: string, name: string, value: string];
+
+function formatJyutping(jyutping: string): string;
+function formatJyutping(jyutping: string | undefined): string | undefined;
+function formatJyutping(jyutping: string | undefined) {
+	return jyutping?.replace(/\d(?!$)/g, "$& ");
+}
+
+function formatGlyphonString(string: string) {
+	return string < "\x80" ? formatJyutping(string) : `${string.replace(/[\0-\x7f]/g, "")}(${formatJyutping(string.replace(/[^0-~]/g, ""))})`
+}
 
 export default class CandidateInfo {
 	isReverseLookup: boolean;
@@ -34,14 +44,14 @@ export class CandidateEntry {
 	matchInputBuffer?: string;
 	honzi?: string;
 	jyutping?: string;
-	pronOrder?: string;
-	sandhi?: string;
+	canonicalHonzi?: string;
+	canonicalJyutping?: string;
+	pronLabel?: string;
 	litColReading?: string;
 	properties: {
 		partOfSpeech?: string;
 		register?: string;
 		label?: string;
-		normalized?: string;
 		written?: string;
 		vernacular?: string;
 		collocation?: string;
@@ -58,34 +68,51 @@ export class CandidateEntry {
 		}
 		// dprint-ignore
 		const [
-			matchInputBuffer, honzi, jyutping, pronOrder, sandhi, litColReading,
-			partOfSpeech, register, label, normalized, written, vernacular, collocation,
-			eng, urd, nep, hin, ind
+			matchInputBuffer, honzi, jyutping, canonicalHonzi, canonicalJyutping,
+			_componentsHonzi, _componentsJyutping, pronLabel, litColReading,
+			partOfSpeech, register, label, written, vernacular, collocation,
+			eng, hin, urd, nep, ind
 		] = parseCSV(value);
 		this.matchInputBuffer = matchInputBuffer;
 		this.honzi = honzi;
-		this.jyutping = jyutping?.replace(/\d(?!$)/g, "$& ");
-		this.pronOrder = pronOrder;
-		this.sandhi = sandhi;
+		this.jyutping = formatJyutping(jyutping);
+		this.canonicalHonzi = canonicalHonzi;
+		this.canonicalJyutping = formatJyutping(canonicalJyutping);
+		this.pronLabel = pronLabel;
 		this.litColReading = litColReading;
 		// dprint-ignore
 		this.properties = {
-			partOfSpeech, register, label, normalized, written, vernacular, collocation,
-			definition: { eng, urd, nep, hin, ind }
+			partOfSpeech, register, label, written, vernacular, collocation,
+			definition: { eng, hin, urd, nep, ind }
 		};
 	}
 
+	get canonicalReference() {
+		if (!this.canonicalHonzi && !this.canonicalJyutping) return undefined;
+		return this.canonicalHonzi
+			? this.canonicalJyutping
+				? `${this.canonicalHonzi}(${this.canonicalJyutping})`
+				: this.canonicalHonzi
+			: this.canonicalJyutping;
+	}
+
 	get pronunciationType() {
-		const types: string[] = [];
-		if (this.sandhi === "1") types.push("changed tone 變音");
-		if (this.litColReading! in litColReadings) types.push(litColReadings[this.litColReading!]!);
+		const types = [
+			...new Set(
+				this.pronLabel?.split("|").map(
+					pronLabel => pronunciationLabels[pronLabel] || pronLabel,
+				),
+			),
+		];
+		const [litOrCol, dir, relatedReadings] = this.litColReading ? this.litColReading.split(/(<|>)/) : [];
+		if (litOrCol in litColReadings) types.push(`${litColReadings[litOrCol]!} ${dir} ${relatedReadings.split("|").map(formatGlyphonString).join("/")}`);
 		return types.length ? `(${types.join(", ")})` : undefined;
 	}
 
 	get formattedPartsOfSpeech() {
 		return nonEmptyArrayOrUndefined([
 			...new Set(
-				this.properties.partOfSpeech?.split(" ").map(
+				this.properties.partOfSpeech?.split("|").map(
 					partOfSpeech => partsOfSpeech[partOfSpeech] || partOfSpeech,
 				),
 			),
@@ -93,13 +120,19 @@ export class CandidateEntry {
 	}
 
 	get formattedRegister() {
-		return registers[this.properties.register!];
+		return nonEmptyArrayOrUndefined([
+			...new Set(
+				this.properties.register?.split("|").map(
+					register => registers[register] || register,
+				),
+			),
+		]);
 	}
 
 	get formattedLabels() {
 		return nonEmptyArrayOrUndefined([
 			...new Set(
-				this.properties.label?.split(" ").flatMap(word => {
+				this.properties.label?.split("|").flatMap(word => {
 					for (const part of word.split("_")) if (labels[part]) return [`(${labels[part]})`];
 					return [];
 				}),
@@ -118,6 +151,7 @@ export class CandidateEntry {
 	}
 
 	otherLanguages(preferences: InterfacePreferences) {
+		if (this.canonicalReference) return undefined;
 		return nonEmptyArrayOrUndefined<KeyNameValue>(
 			[...preferences.displayLanguages].flatMap(language =>
 				language !== preferences.mainLanguage && this.properties.definition[language]
@@ -129,6 +163,7 @@ export class CandidateEntry {
 
 	isDictionaryEntry(preferences: InterfacePreferences) {
 		return !this.isJyutpingOnly && (checkColumns.some(key => this.properties[key])
+			|| !!this.canonicalReference
 			|| [...preferences.displayLanguages].some(language => this.properties.definition[language]));
 	}
 }
