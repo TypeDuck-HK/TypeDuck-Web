@@ -98,6 +98,7 @@ export interface InterfacePreferences {
 	displayLanguages: Set<Language>;
 	mainLanguage: Language | null;
 	isHeiTypeface: boolean;
+	showDictionaryPanel: boolean;
 	showRomanization: ShowRomanization;
 	showReverseCode: boolean;
 }

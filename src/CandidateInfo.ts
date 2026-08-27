@@ -12,7 +12,7 @@ function formatJyutping(jyutping: string | undefined) {
 }
 
 function formatGlyphonString(string: string) {
-	return string < "\x80" ? formatJyutping(string) : `${string.replace(/[\0-\x7f]/g, "")}(${formatJyutping(string.replace(/[^0-~]/g, ""))})`
+	return string < "\x80" ? formatJyutping(string) : `${string.replace(/[\0-\x7f]/g, "")}(${formatJyutping(string.replace(/[^0-~]/g, ""))})`;
 }
 
 export default class CandidateInfo {
@@ -36,7 +36,7 @@ export default class CandidateInfo {
 	}
 
 	hasDictionaryEntry(preferences: InterfacePreferences) {
-		return this.entries.some(entry => entry.isDictionaryEntry(preferences));
+		return preferences.showDictionaryPanel && this.entries.some(entry => entry.isDictionaryEntry(preferences));
 	}
 }
 

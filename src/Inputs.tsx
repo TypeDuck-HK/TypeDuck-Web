@@ -17,7 +17,7 @@ interface RadioProps<T> {
 }
 
 export function Toggle({ label, checked, setChecked }: CheckboxProps) {
-	return <label className="cursor-pointer label gap-2">
+	return <label className="cursor-pointer label px-0 gap-2">
 		<span className="text-lg text-base-content-200 flex-1">{label}</span>
 		<input
 			type="checkbox"
@@ -29,7 +29,7 @@ export function Toggle({ label, checked, setChecked }: CheckboxProps) {
 }
 
 export function Radio<T>({ name, label, state, setState, value }: RadioProps<T>) {
-	return <label className="cursor-pointer label gap-2">
+	return <label className="cursor-pointer label px-0 gap-2">
 		<input
 			type="radio"
 			name={name}
@@ -42,7 +42,7 @@ export function Radio<T>({ name, label, state, setState, value }: RadioProps<T>)
 }
 
 export function Checkbox({ label, checked, setChecked }: CheckboxProps) {
-	return <label className="cursor-pointer label gap-2">
+	return <label className="cursor-pointer label px-0 gap-2">
 		<input
 			type="checkbox"
 			className="checkbox checkbox-primary"

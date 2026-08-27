@@ -11,10 +11,10 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 	}
 	return <section className="max-w-5xl m-auto">
 		<h3 className="font-bold text-2.5xl mb-3">輸入法設定 IME Settings</h3>
-		<div className="lg:columns-2 [&_li]:break-inside-avoid">
+		<div className="lg:columns-2 gap-x-6 [&_li]:break-inside-avoid">
 			<ul>
 				<li>
-					<fieldset className="border border-neutral rounded px-3">
+					<fieldset className="border border-neutral rounded mb-2 px-3">
 						<legend className="text-1.5xl text-base-content mb-3 px-2">顯示語言 Display Languages</legend>
 						<table className="w-full">
 							<thead>
@@ -71,8 +71,11 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 					</fieldset>
 				</li>
 				<li>
+					<Toggle label="辭典版面 Dictionary Panel" checked={prefs.showDictionaryPanel} setChecked={prefs.setShowDictionaryPanel} />
+				</li>
+				<li>
 					<div className="text-lg text-base-content-200 my-3">每頁候選詞數量 No. of Candidates Per Page</div>
-					<div className="w-full mb-6">
+					<div className="w-full mb-7">
 						<input
 							type="range"
 							className="range range-primary range-sm"
@@ -93,7 +96,7 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 					</div>
 				</li>
 				<li>
-					<div className="label gap-2">
+					<div className="label px-0 gap-2">
 						<span className="text-lg text-base-content-200">中文字體 Chinese Typeface</span>
 						<div className="join">
 							<Segment name="chineseTypeface" label="宋體 Sung" state={prefs.isHeiTypeface} setState={prefs.setIsHeiTypeface} value={false} />
@@ -102,7 +105,7 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 					</div>
 				</li>
 				<li>
-					<fieldset className="border border-neutral rounded px-3 pb-2 mb-1">
+					<fieldset className="border border-neutral rounded px-3 pb-2 mb-2">
 						<legend className="text-xl text-base-content my-2 px-2">候選詞粵拼 Candidates Jyutping</legend>
 						{(Object.entries(SHOW_ROMANIZATION_LABELS) as [ShowRomanization, string][]).map(([value, label]) =>
 							<Radio
@@ -134,7 +137,7 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 					<Toggle label="顯示完整輸入碼 Show Full Input Code" checked={prefs.showReverseCode} setChecked={prefs.setShowReverseCode} />
 				</li>
 				<li>
-					<div className="label gap-2">
+					<div className="label px-0 gap-2">
 						<span className="text-lg text-base-content-200">倉頡速成版本 Cangjie/Quick Version</span>
 						<div className="join">
 							<Segment name="cangjieVersion" label="三代 Ver. 3" state={prefs.isCangjie5} setState={prefs.setIsCangjie5} value={false} />
@@ -143,6 +146,7 @@ export default function Preferences(prefs: PreferencesWithSetter) {
 					</div>
 				</li>
 			</ul>
+			<div className="h-8"></div>
 		</div>
 	</section>;
 }

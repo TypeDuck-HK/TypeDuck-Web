@@ -48,6 +48,7 @@ export const SHOW_ROMANIZATION_LABELS: Record<ShowRomanization, string> = {
 export const DEFAULT_PREFERENCES: Preferences = {
 	displayLanguages: new Set([Language.Eng]),
 	mainLanguage: Language.Eng,
+	showDictionaryPanel: true,
 	pageSize: 6,
 	isHeiTypeface: false,
 	showRomanization: ShowRomanization.Always,
