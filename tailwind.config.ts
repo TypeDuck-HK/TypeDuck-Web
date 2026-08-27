@@ -27,6 +27,14 @@ export default {
 			"link": "rgb(var(--link) / <alpha-value>)",
 			"link-focus": "rgb(var(--link-focus) / <alpha-value>)",
 		},
+		extend: {
+			fontSize: {
+				"1.5xl": ["1.375rem", "1.875rem"],
+				"2.5xl": ["1.6875rem", "2.125rem"],
+				"3.5xl": ["2rem", "2.375rem"],
+				"4.5xl": ["2.5rem", "2.75rem"],
+			},
+		},
 	},
 	plugins: [daisyui],
 	daisyui: {

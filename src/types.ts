@@ -96,7 +96,7 @@ export interface RimePreferences {
 
 export interface InterfacePreferences {
 	displayLanguages: Set<Language>;
-	mainLanguage: Language;
+	mainLanguage: Language | null;
 	isHeiTypeface: boolean;
 	showRomanization: ShowRomanization;
 	showReverseCode: boolean;

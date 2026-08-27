@@ -22,7 +22,7 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 								</div>,
 						)}
 						{letSome(
-							[entry.formattedPartsOfSpeech, entry.formattedRegister, entry.formattedLabels, entry.canonicalReference, entry.properties.definition[prefs.mainLanguage]],
+							[entry.formattedPartsOfSpeech, entry.formattedRegister, entry.formattedLabels, entry.canonicalReference, prefs.mainLanguage && entry.properties.definition[prefs.mainLanguage]],
 							(partsOfSpeech, register, labels, canonicalReference, mainDefinition) =>
 								<div className="entry-body">
 									{partsOfSpeech?.map((partOfSpeech, i) => <span key={i} className="pos">{partOfSpeech}</span>)}
@@ -30,7 +30,7 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 									{labels?.map((label, i) => <span key={i} className="lbl">{label}</span>)}
 									{canonicalReference
 										? <span className="text-base-content-300">→{canonicalReference}</span>
-										: mainDefinition && <span className="definition" lang={LANGUAGE_CODES[prefs.mainLanguage]}>{mainDefinition}</span>}
+										: mainDefinition && <span className="definition" lang={LANGUAGE_CODES[prefs.mainLanguage!]}>{mainDefinition}</span>}
 								</div>,
 						)}
 						{letSome(

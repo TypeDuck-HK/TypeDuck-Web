@@ -81,8 +81,8 @@ export function usePreferences() {
 						}
 						: typeof defaultValue === "string"
 						? {
-							stringify: String,
-							parse: String,
+							stringify: value => value ? String(value) : "",
+							parse: value => value || null,
 						}
 						: JSON,
 				},
