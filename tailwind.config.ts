@@ -36,7 +36,7 @@ export default {
 					"color-scheme": "light",
 					"primary": "#dfa852", // control options
 					"primary-content": "#483312", // control options
-					"--primary-content-200": "155 96 0", // #9b6000 inactive segment
+					"--primary-content-200": "141 87 0", // #8d5700 pronunciation
 					"--highlighted": "254 220 156", // #fedc9c highlighted candidate
 					"secondary": "#fef3d2", // footer background
 					"secondary-content": "#4c422c", // footer
@@ -50,8 +50,8 @@ export default {
 					"--base-400": "222 217 207", // #ded9cf candidate panel border
 					"--base-500": "189 183 173", // #bdb7ad disabled page nav buttons
 					"base-content": "#282725", // body
-					"--base-content-200": "94 86 75", // #5e564b label
-					"--base-content-300": "105 80 44", // #69502c pronunciation
+					"--base-content-200": "94 86 75", // #5e564b selection label
+					"--base-content-300": "105 80 44", // #69502c metalanguage
 					"--base-content-400": "97 76 52", // #614c34 definition
 					"--link": "155 96 0", // #9b6000 anchors
 					"--link-focus": "99 67 8", // #634308 hover on anchors
@@ -62,7 +62,7 @@ export default {
 					"color-scheme": "dark",
 					"primary": "#d4ae69", // control options
 					"primary-content": "#241b0d", // control options
-					"--primary-content-200": "231 181 87", // #e7b557 inactive segment
+					"--primary-content-200": "231 181 87", // #e7b557 pronunciation
 					"--highlighted": "114 84 39", // #725427 highlighted candidate
 					"secondary": "#30291c", // footer background
 					"secondary-content": "#ffe59a", // footer
@@ -76,8 +76,8 @@ export default {
 					"--base-400": "80 71 60", // #50473c candidate panel border
 					"--base-500": "118 113 104", // #767168 disabled page nav buttons
 					"base-content": "#fff8e9", // body
-					"--base-content-200": "218 208 189", // #dad0bd label
-					"--base-content-300": "251 223 163", // #fbdfa3 pronunciation
+					"--base-content-200": "218 208 189", // #dad0bd selection label
+					"--base-content-300": "251 223 163", // #fbdfa3 metalanguage
 					"--base-content-400": "251 235 197", // #fbebc5 definition
 					"--link": "202 159 79", // #ca9f4f anchors
 					"--link-focus": "239 175 58", // #efaf3a hover on anchors

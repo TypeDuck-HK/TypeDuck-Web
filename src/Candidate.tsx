@@ -67,11 +67,9 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 			{info.matchedEntries?.map((entry, index) =>
 				<tr key={index}>
 					<td className={`font-geometric text-[11pt] ${background} text-base-content-200`}>{!index && info.label}</td>
-					<td className={background}>
-						{showJyutping && <div className={`text-[10pt] ${background} text-base-content-300`}>{entry.jyutping}</div>}
-						<div className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt]${showJyutping ? " tracking-[8pt]" : ""}`}>{entry.honzi}</div>
-					</td>
-					<td className={`${background} text-base-content-400`}>{!index && (!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
+					{showJyutping && <td className={`text-[12pt] ${background} text-primary-content-200`}>{entry.jyutping}</td>}
+					<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[15pt] ${background}`}>{entry.honzi}</td>
+					<td className={`${background} text-base-content-200`}>{!index && (!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 					{entry.isDictionaryEntry(prefs) && !entry.canonicalReference
 						? definitionLayout.flatMap((languages, index) => {
 							const definitions = languages.flatMap(language =>
@@ -87,7 +85,7 @@ export default function Candidate({ isHighlighted, info, selectCandidate, delete
 					<td className={`font-geometric text-[11pt] ${background} text-base-content-200 align-middle text-right w-full`}>{!index && info.hasDictionaryEntry(prefs) && "ⓘ"}</td>
 				</tr>
 			) || <tr>
-				<td className={`font-geometric text-[11pt] ${background} text-base-content-200`}>{info.label}</td>
+				<td className={`font-geometric text-[11pt] ${background} text-base-content-200`} colSpan={+showJyutping + 1}>{info.label}</td>
 				<td className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[13pt] ${background}`}>{info.text}</td>
 				<td className={`${background} text-base-content-400 w-full`} colSpan={labelColSpan + 2}>{(!info.isReverseLookup || prefs.showReverseCode) && info.note}</td>
 			</tr>}

@@ -113,20 +113,22 @@
 	}
 }
 .dictionary-panel {
-	@apply px-5 pt-3 pb-4 rounded-md bg-base-300 text-[12pt] whitespace-normal min-w-48 z-50;
+	@apply px-5 pt-4 pb-5 rounded-md bg-base-300 text-[12pt] whitespace-normal min-w-48 z-50;
 }
 .dictionary-panel > *:not(:last-child) {
-	@apply mb-3.5;
+	@apply mb-8;
 }
 .dictionary-entry > *:not(:last-child) {
-	@apply mb-2.5;
+	@apply mb-4;
 }
-.entry-head > *:not(:first-child),
+.entry-head > *:not(:first-child) {
+	@apply ml-5;
+}
 .entry-body > *:not(:first-child) {
 	@apply ml-4;
 }
 .pos {
-	@apply font-light text-[10pt] leading-7 text-base-content-300 border border-base-content-300/65 rounded p-0.5 whitespace-nowrap;
+	@apply font-light text-[10pt] leading-7 text-base-content-300 border border-base-content-300/50 rounded px-1 py-0.5 whitespace-nowrap;
 }
 .lbl {
 	@apply text-base-content-300 whitespace-nowrap;

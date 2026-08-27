@@ -17,7 +17,7 @@ const DictionaryPanel = forwardRef<HTMLDivElement, { info: CandidateInfo; prefs:
 							(honzi, jyutping, pronunciationType) =>
 								<div className="entry-head">
 									{honzi && <span className={`${prefs.isHeiTypeface ? "font-hei" : "font-sung"} text-[32pt] whitespace-nowrap`}>{honzi}</span>}
-									{jyutping && <span className="text-[15pt] text-base-content-300 whitespace-nowrap">{jyutping}</span>}
+									{jyutping && <span className="text-[15pt] text-primary-content-200 whitespace-nowrap">{jyutping}</span>}
 									{pronunciationType && <span className="text-base-content-300 whitespace-nowrap">{pronunciationType}</span>}
 								</div>,
 						)}
