@@ -55,9 +55,6 @@ jobs:
             - name: Build Native
               run: |
                   bun run native
-            - name: Build Schema
-              run: |
-                  bun run schema
             - name: Build Library
               run: |
                   bun run lib

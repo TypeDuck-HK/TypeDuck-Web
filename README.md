@@ -63,7 +63,6 @@ Then, execute the following commands in order:
 ```sh
 bun run boost
 bun run native
-bun run schema
 bun run lib
 bun run wasm
 ```

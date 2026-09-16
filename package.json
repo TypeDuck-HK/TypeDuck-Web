@@ -6,7 +6,6 @@
 	"scripts": {
 		"boost": "bun scripts/prepare_boost.ts",
 		"native": "bun scripts/build_native.ts",
-		"schema": "bun scripts/build_schema.ts",
 		"lib": "bun scripts/build_lib.ts",
 		"wasm": "bun scripts/build_wasm.ts",
 		"start": "vite --host",

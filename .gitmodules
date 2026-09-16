@@ -4,3 +4,4 @@
 [submodule "schema"]
 	path = schema
 	url = https://github.com/TypeDuck-HK/schema.git
+	branch = desktop

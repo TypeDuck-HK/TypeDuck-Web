@@ -26,7 +26,6 @@ RUN npm i -g bun
 RUN bun i
 RUN bun run boost
 RUN bun run native
-RUN bun run schema
 RUN bun run lib
 RUN bun run wasm
 RUN bun run build
