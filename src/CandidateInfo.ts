@@ -32,7 +32,7 @@ export default class CandidateInfo {
 	}
 
 	get matchedEntries() {
-		return nonEmptyArrayOrUndefined(this.entries.filter(entry => entry.matchInputBuffer === "1"));
+		return nonEmptyArrayOrUndefined(this.entries.filter(entry => entry.matchInputBuffer === "1")) || nonEmptyArrayOrUndefined(this.entries);
 	}
 
 	hasDictionaryEntry(preferences: InterfacePreferences) {
