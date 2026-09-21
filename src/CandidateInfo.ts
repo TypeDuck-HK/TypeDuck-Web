@@ -68,8 +68,7 @@ export class CandidateEntry {
 		}
 		// dprint-ignore
 		const [
-			matchInputBuffer, honzi, jyutping, canonicalHonzi, canonicalJyutping,
-			_componentsHonzi, _componentsJyutping, pronLabel, litColReading,
+			matchInputBuffer, honzi, jyutping, canonicalHonzi, canonicalJyutping, pronLabel, litColReading,
 			partOfSpeech, register, label, written, vernacular, collocation,
 			eng, hin, urd, nep, ind
 		] = parseCSV(value);
