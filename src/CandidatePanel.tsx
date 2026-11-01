@@ -20,6 +20,7 @@ export default function CandidatePanel({ runAsyncTask, textArea, prefs, deploySt
 	const [showDictionaryIndex, setShowDictionaryIndex] = useState<number | undefined>();
 	const candidateList = useRef<HTMLTableElement>(null);
 	const dictionaryPanel = useRef<HTMLDivElement>(null);
+	const composedText = useRef("");
 
 	const hideDictionary = useCallback(() => {
 		setShowDictionaryIndex(undefined);
@@ -137,6 +138,66 @@ export default function CandidatePanel({ runAsyncTask, textArea, prefs, deploySt
 			document.removeEventListener("keyup", onKeyUp);
 		};
 	}, [inputState, parseKey, processKey]);
+
+	useEffect(() => {
+		// Android virtual keyboards (e.g. Gboard) send `keydown` events with `key: "Unidentified"` and compose text into the textarea directly,
+		// so take back the characters they insert and pass them to Rime instead
+		let snapshot: { value: string; selectionStart: number; selectionEnd: number } | undefined;
+		function onBeforeInput() {
+			const { value, selectionStart, selectionEnd } = textArea;
+			snapshot = { value, selectionStart, selectionEnd };
+		}
+		function onInput(event: Event) {
+			const { inputType } = event as InputEvent;
+			if (!snapshot) return;
+			const { value, selectionStart, selectionEnd } = snapshot;
+			snapshot = undefined;
+			const composed = composedText.current;
+			composedText.current = "";
+			let keys: string[] | undefined;
+			if (inputType === "insertText" || inputType === "insertCompositionText") {
+				let prefix = 0;
+				while (prefix < value.length && value[prefix] === textArea.value[prefix]) prefix++;
+				let suffix = 0;
+				while (suffix < value.length - prefix && value[value.length - 1 - suffix] === textArea.value[textArea.value.length - 1 - suffix]) suffix++;
+				const inserted = textArea.value.slice(prefix, textArea.value.length - suffix);
+				if (prefix + suffix === value.length && [...inserted].every(isPrintable)) {
+					const isComposition = inputType === "insertCompositionText";
+					// The keyboard may keep its own composition and send the whole word again on every keystroke, so only pass the difference
+					if (composed && inserted.startsWith(composed) && (inserted.length > composed.length || !isComposition)) {
+						keys = [...inserted.slice(composed.length)];
+					}
+					else if (composed && composed.startsWith(inserted) && inserted.length < composed.length && isComposition) {
+						keys = Array<string>(composed.length - inserted.length).fill("Backspace");
+					}
+					else if (inserted) {
+						keys = [...inserted];
+					}
+					if (isComposition) composedText.current = inserted;
+				}
+			}
+			else if (inputState && inputType === "deleteContentBackward") {
+				keys = ["Backspace"];
+			}
+			else if (inputState && inputType === "insertLineBreak") {
+				keys = ["Enter"];
+			}
+			if (keys) {
+				textArea.value = value;
+				textArea.selectionStart = selectionStart;
+				textArea.selectionEnd = selectionEnd;
+				for (const key of keys) {
+					processKey(`{${RIME_KEY_MAP[key] || key}}`, key);
+				}
+			}
+		}
+		textArea.addEventListener("beforeinput", onBeforeInput);
+		textArea.addEventListener("input", onInput);
+		return () => {
+			textArea.removeEventListener("beforeinput", onBeforeInput);
+			textArea.removeEventListener("input", onInput);
+		};
+	}, [inputState, processKey, textArea]);
 
 	useEffect(() => {
 		setInputState(undefined);
