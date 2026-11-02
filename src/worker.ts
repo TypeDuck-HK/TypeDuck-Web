@@ -17,6 +17,7 @@ interface Module {
 		opts?: Emscripten.CCallOpts,
 	): ReturnType<RimeAPI[Method]>;
 	FS: typeof FS;
+	IDBFS: typeof IDBFS;
 }
 
 declare const Module: Module;
@@ -109,7 +110,7 @@ const loadRime = new Promise<void>(resolve => {
 		},
 		async onRuntimeInitialized() {
 			Module.FS.mkdir(RIME_USER_DIR);
-			Module.FS.mount(IDBFS, {}, RIME_USER_DIR);
+			Module.FS.mount(Module.IDBFS, {}, RIME_USER_DIR);
 			await syncUserDirectory("read");
 			const success = Module.ccall("init", "boolean", [], []);
 			await syncUserDirectory("write");

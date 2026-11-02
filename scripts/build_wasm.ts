@@ -19,7 +19,7 @@ const compileArgs = {
         -s ALLOW_MEMORY_GROWTH=1 \
         -s MAXIMUM_MEMORY=4GB \
         -s EXPORTED_FUNCTIONS=${exportedFunctions} \
-        -s EXPORTED_RUNTIME_METHODS=["ccall","FS"] \
+        -s EXPORTED_RUNTIME_METHODS=["ccall","FS","IDBFS"] \
         --preload-file schema@/usr/share/rime-data \
         -I build/sysroot/usr/include \
         -o public/rime.js \
